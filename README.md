@@ -1,0 +1,8 @@
+setup
+====
+
+```
+pip install chainer
+```
+
+
