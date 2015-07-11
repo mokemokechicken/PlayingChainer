@@ -4,7 +4,7 @@
 __author__ = 'k_morishita'
 
 """
-N bit の ２進数で表される 2**N 個の数字を N個のOutputのどれかを１にするということを学習させる。
+N bit の ２進数で表される 2**N 個の数字を 2**N個のOutputのどれかを１にするということを学習させる。
 """
 
 import numpy as np
