@@ -36,10 +36,11 @@ def generate_cases(log_file):
     pattern = re.compile("apple", re.I)
 
     with file(log_file) as f:
-        for line in f:
+        for line_ in f:
+            line = line_[:LINE_MAX_CHAR]
             # INPUT
-            data = [ord(x)/255.0 for x in line[:LINE_MAX_CHAR]]
-            data += [0] * (100 - len(data))  # Padding
+            data = [ord(x)/255.0 for x in line]
+            data += [0] * (LINE_MAX_CHAR - len(data))  # Padding
             # OUTPUT
             data += [1 if pattern.search(line) else 0]
             all_data.append(data)
