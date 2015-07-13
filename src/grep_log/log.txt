@@ -1,0 +1,1000 @@
+Jul 13 08:35:09 kmorishita-mm kernel[0]: vm_compressor_record_warmup (46103 - 51797)
+Jul 13 08:35:09 kmorishita-mm kernel[0]: vm_compressor_flush - starting
+Jul 13 08:35:09 kmorishita-mm kernel[0]: vm_compressor_flush completed - took 12952 msecs
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_flush_memory: buffer_cache_gc freed up 26875 wired
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_alloc_pages act 380934, inact 194523, anon 12008, 
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_setup(0) took 17449 ms
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IO80211AWDLPeerManager::doDisable   source [handleSIOCSIFFLA
+Jul 13 08:35:09 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:09 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AirPort: Link Down on awdl0. Reason 1 (Unspecified).
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IO80211AWDLPeerManager::doDisable   source [setLinkState]
+Jul 13 08:35:09 kmorishita-mm kernel[0]: ARPT: 512071.793717: wl0: leaveModulePoweredForOffloads: Wi-
+Jul 13 08:35:09 kmorishita-mm kernel[0]: Bluetooth -- LE is supported - Disable LE meta event
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AirPort: Link Down on en0. Reason 8 (Disassociated because s
+Jul 13 08:35:09 kmorishita-mm kernel[0]: en0::IO80211Interface::postMessage bssid changed
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000340
+Jul 12 17:36:21 kmorishita-mm kernel[0]: AppleThunderboltNHIType2::waitForOk2Go2Sx - retries = 8
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_page_list_setall(preflight 0) start 0xffffff82a976
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_teardown started
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_teardown: wired_pages 376065, free_pages 3743657, 
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_teardown_pmap_structs done: last_valid_compact_ind
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_teardown: mark_as_unneeded_pages 4096, 57857, 3489
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_teardown completed - discarded 96852
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_page_list_setall time: 1281 ms
+Jul 13 08:35:09 kmorishita-mm kernel[0]: pages 938309, wire 256326, act 40320, inact 1, cleaned 0 spe
+Jul 13 08:35:09 kmorishita-mm kernel[0]: did discard act 246961 inact 194522 purgeable 93932 spec 106
+Jul 13 08:35:09 kmorishita-mm kernel[0]: WARNING: hibernate_page_list_setall skipped 36043 xpmapped p
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_page_list_setall found pageCount 296738
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IOHibernatePollerOpen, ml_get_interrupts_enabled 0
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IOHibernatePollerOpen(0)
+Jul 13 08:35:09 kmorishita-mm kernel[0]: encryptStart 14000
+Jul 13 08:35:09 kmorishita-mm kernel[0]: bitmap_size 0x7f508, previewSize 0x39fce0, writing 295465 pa
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_rebuild started
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_rebuild_pmap_structs done: last_valid_compact_indx
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_rebuild completed - took 74 msecs
+Jul 13 08:35:09 kmorishita-mm kernel[0]: booter start at 942 ms smc 0 ms, [11, 0, 0] total 649 ms, ds
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_machine_init: state 2, image pages 256113, sum was
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_newruntime_map time: 0 ms, IOHibernatePollerOpen()
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IOHibernatePollerOpen(0) 5 ms
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_machine_init reading
+Jul 13 08:35:09 kmorishita-mm kernel[0]: PMStats: Hibernate read took 220 ms
+Jul 13 08:35:09 kmorishita-mm kernel[0]: hibernate_machine_init pagesDone 296525 sum2 34d6c44, time: 
+Jul 13 08:35:09 kmorishita-mm kernel[0]: Wake reason: EC.ACAttach (Maintenance)
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000340
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleCamIn::wakeEventHandlerThread
+Jul 13 08:35:09 kmorishita-mm kernel[0]: Previous sleep cause: 5
+Jul 13 08:35:09 kmorishita-mm kernel[0]: Previous shutdown cause: 5
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleThunderboltNHIType2::prePCIWake - power up complete - t
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleThunderboltGenericHAL::earlyWake - complete - took 5 mi
+Jul 13 08:35:09 kmorishita-mm kernel[0]: com_apple_driver_AppleUSBCardReaderUMC[0xffffff8048560400] -
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IOThunderboltSwitch<0xffffff802d0a0600>(0x0)::listenerCallba
+Jul 13 08:35:09 kmorishita-mm kernel[0]: IOThunderboltSwitch<0xffffff802d0a0600>(0x0)::listenerCallba
+Jul 13 08:35:09 kmorishita-mm kernel[0]: TBT W (2): 0x0040 [x]
+Jul 13 08:35:09 kmorishita-mm kernel[0]: en0: channel changed to 1
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AirPort: Link Up on awdl0
+Jul 13 08:35:09 kmorishita-mm kernel[0]: ARPT: 512073.344597: AirPort_Brcm43xx::powerChange: System W
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000340
+Jul 13 08:35:09 kmorishita-mm kernel[0]: AppleCamIn::wakeEventHandlerThread
+Jul 13 08:35:09 kmorishita-mm kernel[0]: full wake request (reason 1) 458 ms
+Jul 13 08:35:10 kmorishita-mm.local loginwindow[103]: magsafeStateChanged state changed old 2 new 1
+Jul 13 08:35:10 kmorishita-mm.local discoveryd[85]: Basic DNSResolver UDNSServer:: PowerState is Dark
+Jul 13 08:35:10 kmorishita-mm kernel[0]: USBMSC Identifier (non-unique): 000000000820 0x5ac 0x8406 0x
+Jul 13 08:35:10 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.bsd.dirhelper[30648]): Endpoint has
+Jul 13 08:35:10 kmorishita-mm kernel[0]: AppleUSBMultitouchDriver::checkStatus - received Status Pack
+Jul 13 08:35:10 kmorishita-mm kernel[0]: IOBluetoothUSBDFU::probe
+Jul 13 08:35:10 kmorishita-mm kernel[0]: IOBluetoothUSBDFU::probe ProductID - 0x8289 FirmwareVersion 
+Jul 13 08:35:10 kmorishita-mm kernel[0]: **** [IOBluetoothHostControllerUSBTransport][start] -- compl
+Jul 13 08:35:10 kmorishita-mm kernel[0]: **** [BroadcomBluetoothHostControllerUSBTransport][start] --
+Jul 13 08:35:10 kmorishita-mm kernel[0]: [IOBluetoothHCIController][staticBluetoothTransportShowsUp] 
+Jul 13 08:35:10 kmorishita-mm kernel[0]: [IOBluetoothHCIController::setConfigState] calling registerS
+Jul 13 08:35:10 kmorishita-mm kernel[0]: **** [IOBluetoothHCIController][ProcessBluetoothTransportSho
+Jul 13 08:35:10 kmorishita-mm UserEventAgent[50]: assertion failed: 14D136: com.apple.telemetry + 320
+Jul 13 08:35:10 kmorishita-mm.local blued[96]: hciControllerOnline; HID devices? 1
+Jul 13 08:35:10 kmorishita-mm.local blued[96]: Acquiring the wifi lock
+Jul 13 08:35:10 kmorishita-mm.local airportd[64]: Property list invalid for format: 100 (property lis
+Jul 13 08:35:10 kmorishita-mm kernel[0]: ARPT: 512074.853647: AWDL Sync Enabled 0
+Jul 13 08:35:10 kmorishita-mm.local blued[96]: hostControllerOnline - Number of Paired devices = 2, L
+	    "68-d9-3c-6f-c7-6d",
+	    "e4-98-d6-39-35-df"
+	)
+Jul 13 08:35:10 kmorishita-mm.local blued[96]: link key found for device: 68-d9-3c-6f-c7-6d
+Jul 13 08:35:10 kmorishita-mm.local blued[96]: Save link key for device: 68-d9-3c-6f-c7-6d
+Jul 13 08:35:11 kmorishita-mm kernel[0]: ARPT: 512075.018234: MacAuthEvent en0   Auth result for: 00:
+Jul 13 08:35:11 kmorishita-mm kernel[0]: AirPort: Link Up on en0
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0::IO80211Interface::postMessage bssid changed
+Jul 13 08:35:11 kmorishita-mm kernel[0]: ARPT: 512075.024519: AWDL Sync Enabled 0
+Jul 13 08:35:11 kmorishita-mm.local configd[59]: LINKLOCAL en0: parent has no IP
+Jul 13 08:35:11 kmorishita-mm kernel[0]: AirPort: RSN handshake complete on en0
+Jul 13 08:35:11 kmorishita-mm.local configd[59]: no interface for external service id
+Jul 13 08:35:11 kmorishita-mm.local networkd[204]: +[NETLedBelly stopFastFail] Clearing ledbelly fail
+Jul 13 08:35:11 kmorishita-mm.local configd[59]: network changed: v4(en0-:192.168.11.106) DNS- Proxy-
+Jul 13 08:35:11 kmorishita-mm.local UserEventAgent[50]: Captive: CNPluginHandler en0: Inactive
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic WABServer NetResolverEvent no resolvers, re
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:11 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:11 kmorishita-mm.local blued[96]: Acquired the wifi lock
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Failed to enable multicast lis
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Warning: IPv4 listener multica
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Failed to enable multicast lis
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Warning: IPv4 listener multica
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Failed to enable multicast lis
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Warning: IPv4 listener multica
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Failed to enable multicast lis
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Warning: IPv4 listener multica
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Failed to enable multicast lis
+Jul 13 08:35:11 kmorishita-mm.local discoveryd[85]: Basic Bonjour,Warn Warning: IPv4 listener multica
+Jul 13 08:35:12 kmorishita-mm.local netbiosd[30635]: network_reachability_changed : network is not re
+Jul 13 08:35:13 kmorishita-mm.local discoveryd[85]: Basic Warn DD_Warn: Corrupt NSEC RDATA size
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::handleWakeEvent_gated
+Jul 13 08:35:14 kmorishita-mm com.apple.iCloudHelper[30701]: objc[30701]: Class FALogging is implemen
+Jul 13 08:35:14 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::handleWakeEvent_gated
+Jul 13 08:35:14 kmorishita-mm.local discoveryd[85]: Basic DNSResolver UDNSServer:: PowerState is Dark
+Jul 13 08:35:14 kmorishita-mm.local airportd[64]: Property list invalid for format: 100 (property lis
+Jul 13 08:35:14 kmorishita-mm kernel[0]: vm_compressor_fastwake_warmup (46103 - 51797) - starting
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000320
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000340
+Jul 13 08:35:14 kmorishita-mm.local watchdogd[463]: [watchdog_daemon] @(         pm_callback) - ref=0
+Jul 13 08:35:14 kmorishita-mm.local CalendarAgent[521]: [com.apple.calendar.store.log.caldav.queue] [
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000340
+Jul 13 08:35:14 kmorishita-mm.local WindowServer[162]: CGXDisplayDidWakeNotification [512078870291030
+Jul 13 08:35:14 kmorishita-mm.local AddressBookSourceSync[30637]: -[ABAddressBook save] failed. (<ABA
+Jul 13 08:35:14 kmorishita-mm.local WindowServer[162]: handle_will_sleep_auth_and_shield_windows: Def
+Jul 13 08:35:14 kmorishita-mm.local CalendarAgent[521]: [com.apple.calendar.store.log.caldav.queue] [
+Jul 13 08:35:14 kmorishita-mm kernel[0]: AppleCamIn::systemWakeCall - messageType = 0xE0000300
+Jul 13 08:35:14 kmorishita-mm.local watchdogd[463]: [watchdog_daemon] @(         pm_callback) - ref=0
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.982483 AM [AirPlay] Power: S
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.982939 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm.local sharingd[524]: 08:35:14.982 : Starting AirDrop server for user 19
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.983201 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.983344 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.983809 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.983943 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm.local coreaudiod[510]: 2015-07-13 08:35:14.984116 AM [AirPlay] BTLE cli
+Jul 13 08:35:14 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:14 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:14 kmorishita-mm.local airportd[64]: Property list invalid for format: 100 (property lis
+Jul 13 08:35:15 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.quicklook[30704]): Endpoint has bee
+Jul 13 08:35:15 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:35:15 kmorishita-mm.local Karabiner[583]: observer_NSWorkspaceScreensDidWakeNotification
+Jul 13 08:35:15 kmorishita-mm.local Karabiner[583]: observer_NSWorkspaceDidWakeNotification
+Jul 13 08:35:15 kmorishita-mm.local periodic-wrapper[7428]: Running daily periodic task.
+Jul 13 08:35:15 kmorishita-mm.local imagent[542]: <IMMacNotificationCenterManager: 0x7fd2fb91d480>: n
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51b
+Jul 13 08:35:15 kmorishita-mm.local sharingd[524]: 08:35:15.233 : Discoverable mode changed to Everyo
+Jul 13 08:35:15 kmorishita-mm.local sharingd[524]: 08:35:15.233 : BTLE scanning started
+Jul 13 08:35:15 kmorishita-mm.local sharingd[524]: 08:35:15.233 : Scanning mode Everyone
+Jul 13 08:35:15 kmorishita-mm.local sharingd[524]: 08:35:15.234 : BTLE scanner Powered On
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51b
+Jul 13 08:35:15 kmorishita-mm.local imagent[542]: <IMMacNotificationCenterManager: 0x7fd2fb91d480>:  
+Jul 13 08:35:15 kmorishita-mm.local imagent[542]: <IMMacNotificationCenterManager: 0x7fd2fb91d480>:  
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51b
+Jul 13 08:35:15 kmorishita-mm.local imagent[542]: <IMMacNotificationCenterManager: 0x7fd2fb91d480>: U
+	    "com.apple.ess",
+	    "com.apple.private.ac"
+	))
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51b
+	    "com.apple.private.alloy.icloudpairing",
+	    "com.apple.private.alloy.continuity.encryption",
+	    "com.apple.private.alloy.continuity.activity",
+	    "com.apple.private.alloy.idstransfers",
+	    "com.apple.private.ids",
+	    "com.apple.private.alloy.phonecontinuity",
+	    "com.apple.ess",
+	    "com.apple.madrid",
+	    "com.apple.private.alloy.continuity.auth",
+	    "com.apple.private.ac",
+	    "com.apple.private.alloy.idsremoteurlconnection",
+	    "com.apple.private.alloy.sms",
+	    "com.apple.private.alloy.screensharing",
+	    "com.apple.private.alloy.maps",
+	    "com.apple.private.alloy.callhistorysync",
+	    "com.apple.private.alloy.continuity.tethering"
+	))
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51c
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51c
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51c
+Jul 13 08:35:15 kmorishita-mm.local identityservicesd[531]: <IMMacNotificationCenterManager: 0x7fe51c
+	    "com.apple.madrid"
+	))
+Jul 13 08:35:15 kmorishita-mm.local networkd[204]: +[NETLedBelly stopFastFail] Clearing ledbelly fail
+Jul 13 08:35:15 kmorishita-mm.local configd[59]: network changed: DNS* Proxy
+Jul 13 08:35:15 kmorishita-mm.local UserEventAgent[50]: Captive: [CNInfoNetworkActive:1709] en0: SSID
+Jul 13 08:35:15 kmorishita-mm.local UserEventAgent[50]: Captive: CNPluginHandler en0: Evaluating
+Jul 13 08:35:15 kmorishita-mm.local UserEventAgent[50]: Captive: en0: Not probing 'kenrumi-5' (cache 
+Jul 13 08:35:15 kmorishita-mm.local UserEventAgent[50]: Captive: CNPluginHandler en0: Authenticated
+Jul 13 08:35:15 kmorishita-mm.local configd[59]: network changed: v4(en0!:192.168.11.106) DNS+ Proxy+
+Jul 13 08:35:15 kmorishita-mm.local networkd[204]: +[NETLedBelly stopFastFail] Clearing ledbelly fail
+Jul 13 08:35:15 kmorishita-mm kernel[0]: en0: BSSID changed to 00:22:cf:e3:ef:05
+Jul 13 08:35:15 kmorishita-mm kernel[0]: en0: channel changed to 48,80
+Jul 13 08:35:16 kmorishita-mm.local thermald[56]: invalid attribute or value, default to yes
+Jul 13 08:35:17 kmorishita-mm.local apsd[86]: Illegal subject name missing 'courier.push.apple.com' (
+	    label = "2.5.4.6";
+	    "localized label" = "2.5.4.6";
+	    type = string;
+	    value = US;
+	}, {
+	    label = "2.5.4.8";
+	    "localized label" = "2.5.4.8";
+	    type = string;
+	    value = California;
+	}, {
+	    label = "2.5.4.7";
+	    "localized label" = "2.5.4.7";
+	    type = string;
+	    value = Cupertino;
+	}, {
+	    label = "2.5.4.10";
+	    "localized label" = "2.5.4.10";
+	    type = string;
+	    value = "Apple Inc.";
+	}, {
+	    label = "2.5.4.3";
+	    "localized label" = "2.5.4.3";
+	    type = string;
+	    value = "courier.sandbox.push.apple.com";
+	})
+Jul 13 08:35:17 kmorishita-mm.local blued[96]: Release the WiFi lock
+Jul 13 08:35:17 kmorishita-mm.local blued[96]: Acquiring the wifi lock
+Jul 13 08:35:17 kmorishita-mm.local blued[96]: Acquired the wifi lock
+Jul 13 08:35:17 kmorishita-mm.local blued[96]: Release the WiFi lock
+Jul 13 08:35:18 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:35:18 kmorishita-mm.local nvALT[8199]: Tagsets differ. Updating.
+Jul 13 08:35:18 --- last message repeated 1 time ---
+Jul 13 08:35:18 kmorishita-mm.local nvALT[8199]: local: 0 added, 0 changed, 0 deleted, 0 to merge
+Jul 13 08:35:18 kmorishita-mm.local nvALT[8199]: remote: 35 added, 0 changed, 0 deleted, 0 missing
+Jul 13 08:35:19 kmorishita-mm.local ServerEventsDaemon[345]: NetworkConfiguration: Handling network c
+Jul 13 08:35:20 kmorishita-mm.local ntpd[320]: wake time set -0.370645 s
+Jul 13 08:35:23 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:35:25 --- last message repeated 1 time ---
+Jul 13 08:35:25 kmorishita-mm kernel[0]: vm_compressor_fastwake_warmup completed - took 10930 msecs
+Jul 13 08:35:26 kmorishita-mm.local CoreServicesUIAgent[20207]: unexpected message <OS_xpc_error: <er
+		"XPCErrorDescription" => <string: 0x7fff7e083f70> { length = 18, contents = "Connection invalid" }
+	}>
+Jul 13 08:35:26 kmorishita-mm.local storedownloadd[654]: DownloadServiceDelegate: Accepting new conne
+Jul 13 08:35:30 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:35:30 kmorishita-mm.local esets_daemon[416]: error[01a00000]: ウイルス対策機能のアップデート中にエラーが発生しました: 
+Jul 13 08:35:30 kmorishita-mm kernel[0]: en0: 802.11d country code set to 'JP'.
+Jul 13 08:35:30 kmorishita-mm kernel[0]: en0: Supported channels 1 2 3 4 5 6 7 8 9 10 11 12 13 36 40 
+Jul 13 08:35:46 kmorishita-mm.local spindump[30792]: Saved diag report for powerstats version com.app
+Jul 13 08:35:46 kmorishita-mm.local spindump[30792]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:35:47 kmorishita-mm.local spindump[30800]: Saved diag report for powerstats version com.app
+Jul 13 08:35:47 kmorishita-mm.local spindump[30800]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:35:47 kmorishita-mm.local spindump[30801]: Saved diag report for powerstats version com.app
+Jul 13 08:35:47 kmorishita-mm.local spindump[30801]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:35:48 kmorishita-mm.local spindump[30802]: Saved diag report for powerstats version com.app
+Jul 13 08:35:48 kmorishita-mm.local spindump[30802]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:35:49 kmorishita-mm.local spindump[30803]: Saved diag report for powerstats version com.app
+Jul 13 08:35:49 kmorishita-mm.local spindump[30803]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:35:49 kmorishita-mm.local spindump[30804]: Saved diag report for powerstats version com.app
+Jul 13 08:35:49 kmorishita-mm.local spindump[30804]: Removing excessive log: file:///Library/Logs/Dia
+Jul 13 08:36:20 kmorishita-mm.local esets_daemon[416]: warning[01a00000]: ThreatSense.NETエラー: 該当するファイ
+Jul 13 08:36:30 kmorishita-mm.local WindowServer[162]: _CGXRemoveWindowFromWindowMovementGroup: Windo
+Jul 13 08:37:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:37:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:37:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:37:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:37:57 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:37:57 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:37:57 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:37:57 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:10 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:12 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:12 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:12 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:12 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:14 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:17 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:21 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:21 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:21 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:21 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:22 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:22 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:22 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:22 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:24 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:26 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:26 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:26 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:26 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:33 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:46 kmorishita-mm.local esets_daemon[416]: warning[01a00000]: ESET Remote Administrator S
+Jul 13 08:38:51 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:51 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:51 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:51 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:55 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:55 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:38:55 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:38:55 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:02 kmorishita-mm.local nvALT[8199]: remote: 0 updates
+Jul 13 08:39:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:09 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:09 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:09 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:09 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:40 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:40 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:40 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:40 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:41 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:42 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:42 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:42 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:42 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:47 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:47 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:47 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:47 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:48 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:48 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:48 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:48 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:49 kmorishita-mm kernel[0]: Google Chrome He (map: 0xffffff80316f5b40) triggered DYLD sh
+Jul 13 08:39:49 kmorishita-mm kernel[0]: Google Chrome He (map: 0xffffff803ab674b0) triggered DYLD sh
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:49 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:50 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:50 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:50 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:50 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:55 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:55 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:55 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:55 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:39:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:00 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:00 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:00 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:00 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:03 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:40:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:44:06 kmorishita-mm.local nvALT[8199]: remote: 0 updates
+Jul 13 08:45:59 kmorishita-mm.local Terminal[22326]: mouseUp: callled
+Jul 13 08:49:11 kmorishita-mm.local nvALT[8199]: remote: 0 updates
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:52 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:54 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:56 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:56 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:50:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:50:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:00 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:00 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:00 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:00 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:04 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:08 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:09 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:09 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:09 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:09 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:11 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:11 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:20 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:21 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:21 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:21 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:21 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:25 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:26 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:26 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:26 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:26 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:28 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:28 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:29 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:30 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:31 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:31 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:31 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:31 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:34 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:34 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:34 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:34 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:43 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:44 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:44 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:44 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:44 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:46 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:47 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:47 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:47 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:47 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:58 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:58 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:51:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:51:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:05 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:05 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:06 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:06 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:15 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:22 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:22 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:22 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:22 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:52:23 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:52:23 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:54:01 kmorishita-mm.local nvALT[8199]: remote: 0 updates
+Jul 13 08:58:37 kmorishita-mm.local Terminal[22326]: mouseUp: callled
+Jul 13 08:59:01 kmorishita-mm.local nvALT[8199]: remote: 0 updates
+Jul 13 08:59:26 kmorishita-mm.local storeinappd[10355]: InAppServiceDelegate: Accepting new connectio
+Jul 13 08:59:26 kmorishita-mm.local Kobito[31536]: open on /Users/k_morishita/Library/Containers/com.
+Jul 13 08:59:26 kmorishita-mm.local sandboxd[331] ([10355]): storeinappd(10355) deny file-read-data /
+Jul 13 08:59:26 kmorishita-mm.local storeinappd[10355]: addOperation <LoadMicroPaymentProductsOperati
+Jul 13 08:59:26 kmorishita-mm.local storeinappd[10355]: addOperation <LoadMicroPaymentProductsOperati
+Jul 13 08:59:26 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:26 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:26 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:26 kmorishita-mm.local storeinappd[10355]: addOperation <LoadMicroPaymentQueuesOperation
+Jul 13 08:59:26 kmorishita-mm.local storedownloadd[654]: DownloadServiceDelegate: Accepting new conne
+Jul 13 08:59:26 kmorishita-mm.local storeassetd[651]: AssetServiceDelegate: Accepting new connection 
+Jul 13 08:59:26 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Cache-Control" = "no-transform, max-age=8682";
+	    Connection = "keep-alive";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 21442;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:26 GMT";
+	    "Last-Modified" = "Sun, 12 Jul 2015 20:43:53 GMT";
+	    Server = "ATS/4.1.0";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "Accept-Encoding, X-Apple-Store-Front, Cookie, User-Agent";
+	    "X-Apple-ATS-Cache-Key" = "/init.itunes.apple.com/80/WebObjects/MZInit.woa/wa/initiateSession/Ma
+	    "X-Apple-Partner" = "origin.0";
+	    "apple-timing-app" = "44 ms";
+	    "x-apple-aka-ttl" = "Generated Sun Jul 12 13:43:53 PDT 2015, Expires Sun Jul 12 19:23:53 PDT 201
+	    "x-apple-application-instance" = 2402;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = HBKBFZPIN7YEOG5Q2IMEI3RX7Q;
+	    "x-apple-max-age" = 14400;
+	    "x-apple-orig-url" = "https://init.itunes.apple.com/WebObjects/MZInit.woa/wa/initiateSession?ix=
+	    "x-apple-request-store-front" = "143462-9,13";
+	    "x-apple-translated-wo-url" = "/WebObjects/MZInit.woa/wa/initiateSession?ix=5&userAgentCacheKey=
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeassetd[651]: AssetServiceDelegate: Accepting new connection 
+Jul 13 08:59:27 kmorishita-mm.local storeassetd[651]: AssetServiceDelegate: Accepting new connection 
+Jul 13 08:59:27 kmorishita-mm.local com.apple.CommerceKit.TransactionService[10357]: TransactionServi
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local com.apple.CommerceKit.TransactionService[10357]: TransactionServi
+Jul 13 08:59:27 kmorishita-mm.local com.apple.CommerceKit.TransactionService[10357]: TransactionServi
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Access-Control-Allow-Origin" = "*";
+	    "Cache-Control" = "no-transform, max-age=1";
+	    Connection = "keep-alive";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 778;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:27 GMT";
+	    "Last-Modified" = "Sun, 12 Jul 2015 23:53:52 GMT";
+	    Server = "ATS/4.1.0";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "Accept-Encoding, Accept-Encoding";
+	    "X-Apple-ATS-Cache-Key" = "/17.154.42.215/80/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns/iDevi
+	    "X-Apple-Partner" = "origin.0";
+	    "apple-timing-app" = "6 ms";
+	    "x-apple-aka-ttl" = "Generated Sun Jul 12 16:53:52 PDT 2015, Expires Sun Jul 12 16:54:52 PDT 201
+	    "x-apple-application-instance" = 1005704;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = NIBUPFQ26AS6WJGDP6B6PJT4VA;
+	    "x-apple-orig-url" = "https://itunes.apple.com/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns?app
+	    "x-apple-translated-wo-url" = "/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns?appAdamId=89662406
+	    "x-frame-options" = SAMEORIGIN;
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Access-Control-Allow-Origin" = "*";
+	    "Cache-Control" = "private, max-age=60";
+	    Connection = "keep-alive";
+	    "Content-Length" = 2;
+	    "Content-Type" = "application/json; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:27 GMT";
+	    Expires = "Mon, 13 Jul 2015 00:00:27 GMT";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "X-Apple-Store-Front,X-Dsid,Cookie";
+	    "access-control-allow-credentials" = true;
+	    "apple-timing-app" = "0 ms";
+	    "x-apple-application-instance" = 835;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = IV6G6KJEA5IRRQZ3SHFTD2XKTI;
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Access-Control-Allow-Origin" = "*";
+	    "Cache-Control" = "no-transform, max-age=60";
+	    Connection = "keep-alive";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 778;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:27 GMT";
+	    "Last-Modified" = "Sun, 12 Jul 2015 23:59:27 GMT";
+	    Server = "ATS/4.1.0";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "Accept-Encoding, Accept-Encoding";
+	    "X-Apple-ATS-Cache-Key" = "/17.154.42.213/80/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns/iDevi
+	    "X-Apple-Partner" = "origin.0";
+	    "apple-timing-app" = "44 ms";
+	    "x-apple-aka-ttl" = "Generated Sun Jul 12 16:59:27 PDT 2015, Expires Sun Jul 12 17:00:27 PDT 201
+	    "x-apple-application-instance" = 1000405;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = ILG3WDCRLQGWQBXHHH34O256XY;
+	    "x-apple-orig-url" = "https://itunes.apple.com/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns?app
+	    "x-apple-translated-wo-url" = "/WebObjects/MZStore.woa/wa/fetchSoftwareAddOns?appAdamId=89662406
+	    "x-frame-options" = SAMEORIGIN;
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:27 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeinappd[10355]: addOperation <ISStoreURLOperation: 0x7fd739db
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeassetd[651]: AssetServiceDelegate: Accepting new connection 
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Cache-Control" = "private, no-cache, no-store, no-transform, must-revalidate, max-age=0";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 479;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    Expires = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "Set-Cookie" = "itspod=38; version=\"1\"; expires=Wed, 12-Aug-2015 23:59:28 GMT; path=/; domain=
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    "apple-timing-app" = "11 ms";
+	    "edge-control" = "no-store, cache-maxage=0";
+	    itspod = 38;
+	    pod = 38;
+	    "x-apple-actionsignature" = "AQA70p4vRzbXeDqvagcyHmTGwyJ8Ii92SIbS3ga1i0+NwRT0BkC7VcEgH1KY/8s9/11
+	    "x-apple-application-instance" = 380103;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-asset-version" = 0;
+	    "x-apple-date-generated" = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "x-apple-jingle-correlation-key" = VBMBVURXVLLKIPZD7M2LVBANRY;
+	    "x-apple-lokamai-no-cache" = true;
+	    "x-apple-orig-url" = "https://p38-buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/inAppCheckDow
+	    "x-apple-request-store-front" = "143462-9,13";
+	    "x-apple-translated-wo-url" = "/WebObjects/MZFinance.woa/wa/inAppCheckDownloadQueue?guid=6C4008B
+	    "x-frame-options" = SAMEORIGIN;
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Cache-Control" = "no-transform, max-age=8680";
+	    Connection = "keep-alive";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 21442;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "Last-Modified" = "Sun, 12 Jul 2015 20:43:53 GMT";
+	    Server = "ATS/4.1.0";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "Accept-Encoding, X-Apple-Store-Front, Cookie, User-Agent";
+	    "X-Apple-ATS-Cache-Key" = "/init.itunes.apple.com/80/WebObjects/MZInit.woa/wa/initiateSession/Ma
+	    "X-Apple-Partner" = "origin.0";
+	    "apple-timing-app" = "44 ms";
+	    "x-apple-aka-ttl" = "Generated Sun Jul 12 13:43:53 PDT 2015, Expires Sun Jul 12 19:23:53 PDT 201
+	    "x-apple-application-instance" = 2402;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = HBKBFZPIN7YEOG5Q2IMEI3RX7Q;
+	    "x-apple-max-age" = 14400;
+	    "x-apple-orig-url" = "https://init.itunes.apple.com/WebObjects/MZInit.woa/wa/initiateSession?ix=
+	    "x-apple-request-store-front" = "143462-9,13";
+	    "x-apple-translated-wo-url" = "/WebObjects/MZInit.woa/wa/initiateSession?ix=5&userAgentCacheKey=
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:28 kmorishita-mm.local com.apple.CommerceKit.TransactionService[10357]: TransactionServi
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeinappd[10355]: addOperation <ISStoreURLOperation: 0x7fd73c1d
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Cache-Control" = "private, no-cache, no-store, no-transform, must-revalidate, max-age=0";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 479;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    Expires = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "Set-Cookie" = "itspod=38; version=\"1\"; expires=Wed, 12-Aug-2015 23:59:28 GMT; path=/; domain=
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    "apple-timing-app" = "11 ms";
+	    "edge-control" = "no-store, cache-maxage=0";
+	    itspod = 38;
+	    pod = 38;
+	    "x-apple-actionsignature" = "AQDvP2cah2yvcxABWy5f9+HWLAxFN2aOE7qMlSz1r2mD6UWvOA03Db1ttswMhv0j0kh
+	    "x-apple-application-instance" = 380133;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-asset-version" = 0;
+	    "x-apple-date-generated" = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "x-apple-jingle-correlation-key" = QXRP4NNXEK3VXYL6SLDRIPYON4;
+	    "x-apple-lokamai-no-cache" = true;
+	    "x-apple-orig-url" = "https://p38-buy.itunes.apple.com/WebObjects/MZFinance.woa/wa/inAppCheckRec
+	    "x-apple-request-store-front" = "143462-9,13";
+	    "x-apple-translated-wo-url" = "/WebObjects/MZFinance.woa/wa/inAppCheckRecurringDownloadQueue?gui
+	    "x-frame-options" = SAMEORIGIN;
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Cache-Control" = "no-transform, max-age=8680";
+	    Connection = "keep-alive";
+	    "Content-Encoding" = gzip;
+	    "Content-Length" = 21442;
+	    "Content-Type" = "text/xml; charset=UTF-8";
+	    Date = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    "Last-Modified" = "Sun, 12 Jul 2015 20:43:53 GMT";
+	    Server = "ATS/4.1.0";
+	    "Strict-Transport-Security" = "max-age=31536000";
+	    Vary = "Accept-Encoding, X-Apple-Store-Front, Cookie, User-Agent";
+	    "X-Apple-ATS-Cache-Key" = "/init.itunes.apple.com/80/WebObjects/MZInit.woa/wa/initiateSession/Ma
+	    "X-Apple-Partner" = "origin.0";
+	    "apple-timing-app" = "44 ms";
+	    "x-apple-aka-ttl" = "Generated Sun Jul 12 13:43:53 PDT 2015, Expires Sun Jul 12 19:23:53 PDT 201
+	    "x-apple-application-instance" = 2402;
+	    "x-apple-application-site" = NWK;
+	    "x-apple-jingle-correlation-key" = HBKBFZPIN7YEOG5Q2IMEI3RX7Q;
+	    "x-apple-max-age" = 14400;
+	    "x-apple-orig-url" = "https://init.itunes.apple.com/WebObjects/MZInit.woa/wa/initiateSession?ix=
+	    "x-apple-request-store-front" = "143462-9,13";
+	    "x-apple-translated-wo-url" = "/WebObjects/MZInit.woa/wa/initiateSession?ix=5&userAgentCacheKey=
+	    "x-webobjects-loadaverage" = 0;
+	}
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: AccountServiceDelegate: Accepting new connect
+Jul 13 08:59:28 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Access-Control-Allow-Origin" = "*";
+	    "Cache-Control" = "no-cache, no-store, max-age=0, no-transform, private";
+	    Connection = "Keep-Alive";
+	    "Content-Length" = 43;
+	    "Content-Type" = "image/gif";
+	    Date = "Sun, 12 Jul 2015 23:59:28 GMT";
+	    Etag = "\"55A2FF60-7BDC-5D823915\"";
+	    Expires = "Sat, 11 Jul 2015 23:59:28 GMT";
+	    "Keep-Alive" = "timeout=15";
+	    "Last-Modified" = "Mon, 13 Jul 2015 23:59:28 GMT";
+	    P3P = "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"";
+	    Pragma = "no-cache";
+	    Server = "Omniture DC/2.0.0";
+	    "Set-Cookie" = "s_vi=[CS]v1|2A34D44985011965-40000131A0050DF4[CE]; Expires=Mon, 11 Jan 2016 14:5
+	    Vary = "*";
+	    "X-C" = "ms-4.9.6";
+	    xserver = www92;
+	}
+Jul 13 08:59:29 kmorishita-mm.local storeaccountd[598]: ADI: {
+	    "Access-Control-Allow-Origin" = "*";
+	    "Cache-Control" = "no-cache, no-store, max-age=0, no-transform, private";
+	    Connection = "Keep-Alive";
+	    "Content-Length" = 43;
+	    "Content-Type" = "image/gif";
+	    Date = "Sun, 12 Jul 2015 23:59:29 GMT";
+	    Etag = "\"55A2FF61-0D99-4D6C2770\"";
+	    Expires = "Sat, 11 Jul 2015 23:59:29 GMT";
+	    "Keep-Alive" = "timeout=15";
+	    "Last-Modified" = "Mon, 13 Jul 2015 23:59:29 GMT";
+	    P3P = "policyref=\"/w3c/p3p.xml\", CP=\"NOI DSP COR NID PSA OUR IND COM NAV STA\"";
+	    Pragma = "no-cache";
+	    Server = "Omniture DC/2.0.0";
+	    "Set-Cookie" = "s_vi=[CS]v1|2A34D44985011965-40000131A0050DF4[CE]; Expires=Mon, 11 Jan 2016 14:5
+	    Vary = "*";
+	    "X-C" = "ms-4.9.6";
+	    xserver = www90;
+	}
+Jul 13 08:59:31 kmorishita-mm com.apple.xpc.launchd[1] (com.apple.imfoundation.IMRemoteURLConnectionA
+Jul 13 08:59:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:59:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 08:59:59 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 08:59:59 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 09:00:01 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
+Jul 13 09:00:02 kmorishita-mm.local Dock[504]: CGSConnectionByID: 0 is not a valid connection ID.
+Jul 13 09:00:02 kmorishita-mm.local Dock[504]: Invalid Connection ID 0
