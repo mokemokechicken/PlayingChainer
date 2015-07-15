@@ -106,13 +106,14 @@ class NNQLearningPlayer(object):
         self.optimizer = optimizers.SGD()
         self.optimizer.setup(self.model.collect_parameters())
         self.last_state = self.last_action = None
+        self.last_q_list = None
         self.training = True
 
     def action(self, state_, last_reward):
         state = state_ / 9.0
-        next_action = self.select_action(state)
         if self.last_state is not None and self.training:
             self.update_q_table(self.last_state, self.last_action, state, last_reward)
+        next_action = self.select_action(state)
         self.last_state = state
         self.last_action = next_action
         return self.actions[next_action]
@@ -130,16 +131,17 @@ class NNQLearningPlayer(object):
         return y
 
     def select_action(self, state):
+        self.last_q_list = self.forward(state)
         if self.training and random() < self.E_GREEDY:  # http://www.sist.ac.jp/~kanakubo/research/reinforcement_learning.html
             return randint(0, len(self.actions)-1)
         else:
-            actions = self.forward(state, volatile=True)
-            return np.argmax(actions.data)
+            # actions = self.forward(state, volatile=True)
+            return np.argmax(self.last_q_list.data)
 
     def update_q_table(self, last_state, last_action, cur_state, last_reward):
         target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state, volatile=True).data)
         self.optimizer.zero_grads()
-        q_last = self.forward(last_state)
+        q_last = self.last_q_list
         tt = np.copy(q_last.data)
         tt[0][last_action] = target_val
         target = Variable(tt)
