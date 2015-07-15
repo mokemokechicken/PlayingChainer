@@ -77,9 +77,9 @@ class AddingGame(Game):
         reward = 0
         if self.reward_type == 1:
             if next_state == 7:
-                reward = 1
+                reward = 0.01
             elif next_state in (5, 9):
-                reward = -100
+                reward = -1.0
         return next_state, reward
 
 class HumanPlayer(object):
@@ -121,8 +121,8 @@ class NNQLearningPlayer(object):
         x = Variable(np.array([[state]], dtype=np.float32), volatile=volatile)
         for i in range(1, 1000):  # 1000 は適当な数
             if hasattr(self.model, "l%d" % i):
-                if i > 1:
-                    x = F.relu(x)
+                # if i > 1:
+                #     x = F.relu(x)
                 x = getattr(self.model, "l%d" % i)(x)
             else:
                 y = x
@@ -133,7 +133,7 @@ class NNQLearningPlayer(object):
         if self.training and random() < self.E_GREEDY:  # http://www.sist.ac.jp/~kanakubo/research/reinforcement_learning.html
             return randint(0, len(self.actions)-1)
         else:
-            actions = self.forward(state)
+            actions = self.forward(state, volatile=True)
             return np.argmax(actions.data)
 
     def update_q_table(self, last_state, last_action, cur_state, last_reward):
@@ -157,7 +157,7 @@ if __name__ == '__main__':
     for g in game.play():
         if g.turn % 100 == 0:
             if not player.training:
-                this_term_score = game.total_reward - last_score
+                this_term_score = int(round((game.total_reward - last_score)*100))
                 print "Turn %d: This 100 turn score: %s" % (g.turn, this_term_score)
                 fp.write("%d\t%d\n" % (g.turn, this_term_score))
             last_score = game.total_reward
