@@ -99,8 +99,8 @@ class NNQLearningPlayer(object):
     def __init__(self):
         self.actions = [1, 2, 3, 4]
         self.model = FunctionSet(
-            l1=F.Linear(1, 20),
-            l2=F.Linear(20, 10),
+            l1=F.EmbedID(10, 10),
+            l2=F.Linear(10, 10),
             l3=F.Linear(10, 4),
         )
         self.optimizer = optimizers.SGD()
@@ -110,7 +110,7 @@ class NNQLearningPlayer(object):
         self.training = True
 
     def action(self, state_, last_reward):
-        state = state_ / 9.0
+        state = state_
         if self.last_state is not None and self.training:
             self.update_q_table(self.last_state, self.last_action, state, last_reward)
         next_action = self.select_action(state)
@@ -119,7 +119,7 @@ class NNQLearningPlayer(object):
         return self.actions[next_action]
 
     def forward(self, state, volatile=False):
-        x = Variable(np.array([[state]], dtype=np.float32), volatile=volatile)
+        x = Variable(np.array([state], dtype=np.int32), volatile=volatile)
         for i in range(1, 1000):  # 1000 は適当な数
             if hasattr(self.model, "l%d" % i):
                 # if i > 1:
