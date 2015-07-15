@@ -92,7 +92,7 @@ class HumanPlayer(object):
         return int(action)
 
 class NNQLearningPlayer(object):
-    ALPHA = 0.005
+    ALPHA = 0.05
     GAMMA = 0.99
     E_GREEDY = 0.1
 
@@ -100,7 +100,8 @@ class NNQLearningPlayer(object):
         self.actions = [1, 2, 3, 4]
         self.model = FunctionSet(
             l1=F.Linear(1, 20),
-            l2=F.Linear(20, 4),
+            l2=F.Linear(20, 10),
+            l3=F.Linear(10, 4),
         )
         self.optimizer = optimizers.SGD()
         self.optimizer.setup(self.model.collect_parameters())
@@ -116,10 +117,12 @@ class NNQLearningPlayer(object):
         self.last_action = next_action
         return self.actions[next_action]
 
-    def forward(self, state):
-        x = Variable(np.array([[state]], dtype=np.float32))
+    def forward(self, state, volatile=False):
+        x = Variable(np.array([[state]], dtype=np.float32), volatile=volatile)
         for i in range(1, 1000):  # 1000 は適当な数
             if hasattr(self.model, "l%d" % i):
+                if i > 1:
+                    x = F.relu(x)
                 x = getattr(self.model, "l%d" % i)(x)
             else:
                 y = x
@@ -134,9 +137,8 @@ class NNQLearningPlayer(object):
             return np.argmax(actions.data)
 
     def update_q_table(self, last_state, last_action, cur_state, last_reward):
+        target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state, volatile=True).data)
         self.optimizer.zero_grads()
-        target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state).data)
-
         q_last = self.forward(last_state)
         tt = np.copy(q_last.data)
         tt[0][last_action] = target_val
