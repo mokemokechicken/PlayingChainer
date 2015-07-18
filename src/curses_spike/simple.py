@@ -34,6 +34,7 @@ def main(screen):
         win.refresh()
 
 def ignore_error_add_ch(win, y, x, ch):
+    """一番右下に書き込むと例外が飛んでくるけど、漢は黙って無視するのがお作法らしい？"""
     try:
         win.addch(y, x, ch)
     except curses.error:

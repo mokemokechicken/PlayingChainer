@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 # coding: utf-8
-from cPickle import loads
-import curses
-import numpy as np
-import time
 
 __author__ = 'k_morishita'
 
+from cPickle import loads
+import curses
 import socket
+import time
+
+from curse_util import ignore_error_add_str
 
 
 def receive_all(sock):
@@ -48,13 +49,13 @@ class ReplayClient(object):
 
     def init_window(self, width, height):
         curses.curs_set(0)
-        border_win = curses.newwin(height+2, width+2, self.W_TOP, self.W_LEFT)  # h, w, y, x
+        border_win = curses.newwin(height + 2, width + 2, self.W_TOP, self.W_LEFT)  # h, w, y, x
         border_win.box()
         self.stdscr.refresh()
         border_win.refresh()
-        self.main_window = curses.newwin(height, width, self.W_TOP+1, self.W_LEFT+1)
+        self.main_window = curses.newwin(height, width, self.W_TOP + 1, self.W_LEFT + 1)
         self.main_window.refresh()
-        self.info_window = curses.newwin(height, width, self.W_TOP+1, self.W_LEFT+width + 2)
+        self.info_window = curses.newwin(height, width, self.W_TOP + 1, self.W_LEFT + width + 2)
 
     def play_data(self, replay_data):
         width, height = replay_data["size"]
@@ -84,29 +85,23 @@ class ReplayClient(object):
         play_id = meta["play_id"]
 
         self.info_window.clear()
-        self.info_window.addstr(0,  2, "PlayID: %d" % play_id)
-        self.info_window.addstr(1,  2, "Turn: %s" % game["turn"])
-        self.info_window.addstr(2,  2, "Total Score: %s" % game["total_reward"])
-        self.info_window.addstr(3,  2, "This Reward: %s" % game["last_reward"])
-        self.info_window.addstr(4,  2, "=== Action ===")
-        self.info_window.addstr(5,  2, "Left : %d" % (keymap["LEFT"]  & last_action > 0))
-        self.info_window.addstr(6,  2, "Right: %d" % (keymap["RIGHT"] & last_action > 0))
-        self.info_window.addstr(7,  2, "Up   : %d" % (keymap["UP"]    & last_action > 0))
-        self.info_window.addstr(8,  2, "Down : %d" % (keymap["DOWN"]  & last_action > 0))
-        self.info_window.addstr(9,  2, "A    : %d" % (keymap["A"]     & last_action > 0))
-        self.info_window.addstr(10, 2, "B    : %d" % (keymap["B"]     & last_action > 0))
+        self.info_window.addstr(0, 2, "PlayID: %d    HighScore: %s" % (play_id, meta["high_score"]))
+        self.info_window.addstr(1, 2, "Turn: %s" % game["turn"])
+        self.info_window.addstr(2, 2, "Total Score: %s" % game["total_reward"])
+        self.info_window.addstr(3, 2, "This Reward: %s" % game["last_reward"])
+        self.info_window.addstr(4, 2, "=== Action ===")
+        self.info_window.addstr(5, 2, "Left : %d" % (keymap["LEFT"] & last_action > 0))
+        self.info_window.addstr(6, 2, "Right: %d" % (keymap["RIGHT"] & last_action > 0))
+        self.info_window.addstr(7, 2, "Up   : %d" % (keymap["UP"] & last_action > 0))
+        self.info_window.addstr(8, 2, "Down : %d" % (keymap["DOWN"] & last_action > 0))
+        self.info_window.addstr(9, 2, "A    : %d" % (keymap["A"] & last_action > 0))
+        self.info_window.addstr(10, 2, "B    : %d" % (keymap["B"] & last_action > 0))
         self.info_window.refresh()
-
-def ignore_error_add_str(win, y, x, s):
-    """一番右下に書き込むと例外が飛んでくるけど、漢は黙って無視するのがお作法らしい？"""
-    try:
-        win.addstr(y, x, s)
-    except curses.error:
-        pass
 
 def main(stdscr):
     client = ReplayClient(stdscr, 'localhost', 7000)
     client.replay_forever()
 
-curses.wrapper(main)
 
+if __name__ == '__main__':
+    curses.wrapper(main)
