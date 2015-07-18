@@ -1,8 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
+from copy import deepcopy
 import curses
 
 from random import random
+import socket
+import threading
 import time
 
 __author__ = 'k_morishita'
@@ -21,6 +24,7 @@ class Game(object):
 
     def __init__(self, player):
         self.player = player
+        self.play_id = 0
 
     def game_start(self):
         self.state = None
@@ -28,6 +32,7 @@ class Game(object):
         self.last_reward = 0
         self.total_reward = 0
         self.is_game_over = False
+        self.play_id += 1
         self.prepare_game()
         self.notify_game_start()
 
@@ -49,6 +54,19 @@ class Game(object):
             self.total_reward += self.last_reward
             self.notify_update()
         self.game_over()
+
+    def turn_info(self):
+        return {
+            "turn": self.turn,
+            "last_reward": self.last_reward,
+            "total_reward": self.total_reward,
+            "last_action": self.last_action,
+        }
+
+    def meta_info(self):
+        return {
+            "play_id": self.play_id,
+        }
 
     def prepare_game(self):
         raise NotImplemented()
@@ -92,6 +110,18 @@ class AsciiGame(Game):
 
     def is_valid_action(self, action):
         return 0 <= int(action) < 64
+
+    def meta_info(self):
+        info = super(AsciiGame, self).meta_info()
+        info["keymap"] = {
+            "UP": self.KEY_UP,
+            "DOWN": self.KEY_DOWN,
+            "RIGHT": self.KEY_RIGHT,
+            "LEFT": self.KEY_LEFT,
+            "A": self.BUTTON_A,
+            "B": self.BUTTON_B,
+        }
+        return info
 
 class Screen(object):
     data = []
@@ -193,20 +223,46 @@ class JumpGame(AsciiGame):
 
 
 class DebugHumanPlayer(object):
-    W_LEFT = 1
-    W_TOP = 1
-    main_window = None
-    info_window = None
     keymap = {}
     MSEC_PER_TURN = 100
     SEC_PER_TURN = MSEC_PER_TURN / 1000.0
 
+    def __init__(self, stdscr):
+        self.stdscr = stdscr
+
+    def setup(self, game):
+        self.stdscr.timeout(self.MSEC_PER_TURN - 5)
+        self.keymap[ord("j")] = game.KEY_LEFT
+        self.keymap[ord("l")] = game.KEY_RIGHT
+        self.keymap[ord("i")] = game.KEY_UP
+        self.keymap[ord("k")] = game.KEY_DOWN
+        self.keymap[ord("m")] = game.KEY_DOWN
+        self.keymap[ord("x")] = game.BUTTON_A
+        self.keymap[ord(" ")] = game.BUTTON_A
+        self.keymap[ord("z")] = game.BUTTON_B
+
+    def action(self, state, last_reward):
+        t1 = time.time()
+        c = self.stdscr.getch()
+        t2 = time.time() - t1
+        if t2 < self.SEC_PER_TURN:
+            time.sleep(self.SEC_PER_TURN - t2)
+        return self.keymap.get(c, 0)
+
+class ConsoleDebugObserver(object):
+    W_LEFT = 1
+    W_TOP = 1
     INFO_WIDTH = 40
+    MSEC_PER_TURN = 100
+    SEC_PER_TURN = MSEC_PER_TURN / 1000.0
+
+    main_window = None
+    info_window = None
 
     def __init__(self, stdscr):
         self.stdscr = stdscr
 
-    def setup_debug_screen(self, game):
+    def setup(self, game):
         """
 
         :type game: AsciiGame
@@ -219,31 +275,12 @@ class DebugHumanPlayer(object):
         self.main_window = curses.newwin(game.HEIGHT, game.WIDTH, self.W_TOP+1, self.W_LEFT+1)
         self.main_window.refresh()
         self.main_window.timeout(self.MSEC_PER_TURN - 5)
-
         self.info_window = curses.newwin(game.HEIGHT, self.INFO_WIDTH, self.W_TOP+1, self.W_LEFT+game.WIDTH + 2)
-
-        self.keymap[ord("j")] = game.KEY_LEFT
-        self.keymap[ord("l")] = game.KEY_RIGHT
-        self.keymap[ord("i")] = game.KEY_UP
-        self.keymap[ord("k")] = game.KEY_DOWN
-        self.keymap[ord("m")] = game.KEY_DOWN
-        self.keymap[ord("x")] = game.BUTTON_A
-        self.keymap[ord(" ")] = game.BUTTON_A
-        self.keymap[ord("z")] = game.BUTTON_B
-
-    def action(self, state, last_reward):
-        t1 = time.time()
-        c = self.main_window.getch()
-        t2 = time.time() - t1
-        if t2 < self.SEC_PER_TURN:
-            time.sleep(self.SEC_PER_TURN - t2)
-        return self.keymap.get(c, 0)
 
     def on_game_start(self, game):
         pass
 
     def on_game_over(self, game):
-        curses.flash()
         time.sleep(3)
 
     def on_update(self, game):
@@ -277,11 +314,65 @@ def ignore_error_add_str(win, y, x, s):
         pass
 
 
+from cPickle import dumps, HIGHEST_PROTOCOL
+
+
+class ReplayServer(object):
+    last_play = None
+    current_play = None
+    MAX_SCENES = 10000
+    host = '0.0.0.0'
+    port = 7000
+
+    def serve_forever(self):
+        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        sock.bind((self.host, self.port))
+        sock.listen(1)
+        while True:
+            conn, address = sock.accept()
+            self.handle(conn)
+            conn.close()
+
+    def handle(self, conn):
+        data = dumps(self.last_play,  HIGHEST_PROTOCOL)
+        conn.send(data)
+
+    def on_game_start(self, game):
+        self.current_play = {
+            "size": [game.WIDTH, game.HEIGHT],
+            "meta": game.meta_info(),
+            "scenes": [],
+        }
+
+    def on_game_over(self, game):
+        self.last_play = self.current_play
+
+    def on_update(self, game):
+        if len(self.current_play["scenes"]) < self.MAX_SCENES:
+            self.current_play["scenes"].append({
+                "screen": game.state.screen.data.copy(),
+                "game": game.turn_info(),
+            })
+        else:
+            self.last_play = self.current_play
+
+
 def human_play(stdscr):
     player = DebugHumanPlayer(stdscr)
+    console = ConsoleDebugObserver(stdscr)
+    replay_server = ReplayServer()
+
     game = JumpGame(player)
-    game.add_observer(player)
-    player.setup_debug_screen(game)
+    game.add_observer(console)
+    game.add_observer(replay_server)
+
+    player.setup(game)
+    console.setup(game)
+    replay_server.port = 7000
+
+    server_thread = threading.Thread(target=replay_server.serve_forever)
+    server_thread.setDaemon(True)
+    server_thread.start()
 
     while True:
         game.play()
