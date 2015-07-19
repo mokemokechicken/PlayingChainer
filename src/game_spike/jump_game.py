@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import os
 
 __author__ = 'k_morishita'
 
@@ -7,6 +8,7 @@ from random import random
 
 from game_common.base_system import AsciiGame, Screen
 from game_common.debug_game import debug_game
+from game_common.ascii_game_player_agent import agent_play
 
 class State(object):
     screen = None
@@ -77,4 +79,7 @@ class JumpGame(AsciiGame):
                 state.jumping_down = False
 
 if __name__ == '__main__':
-    debug_game(JumpGame)
+    if os.environ.get("DEBUG", None):
+        debug_game(JumpGame)
+    else:
+        agent_play(JumpGame)
