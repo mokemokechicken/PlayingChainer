@@ -18,6 +18,13 @@ class AsciiGamePlayerAgent(object):
     GAMMA = 0.99
     E_GREEDY = 0.3
 
+    optimizer = None
+
+    last_action = None
+    last_q_list = None
+    training = True
+    use_greedy = True
+
     def __init__(self, model=None, repo=None, model_name=None):
         """
 
@@ -33,13 +40,16 @@ class AsciiGamePlayerAgent(object):
         )
         self.in_size = len(self.model.l1.W[0])
         self.repo = repo or GameRepository()
+        self.load_model_parameters()
 
+    def load_model_parameters(self):
         self.repo.load_model_params(self.model, self.model_name)
         self.optimizer = optimizers.SGD()
         self.optimizer.setup(self.model.collect_parameters())
+
+    def ready(self):
         self.last_action = None
         self.last_q_list = None
-        self.training = True
 
     def action(self, state, last_reward):
         if self.last_action is not None and self.training:
@@ -65,7 +75,7 @@ class AsciiGamePlayerAgent(object):
 
     def select_action(self, state):
         self.last_q_list = self.forward(state)
-        if self.training and random() < self.E_GREEDY:
+        if self.use_greedy and random() < self.E_GREEDY:
             return randint(0, len(self.actions)-1)
         else:
             return np.argmax(self.last_q_list.data)
@@ -82,15 +92,31 @@ class AsciiGamePlayerAgent(object):
         loss.backward()
         self.optimizer.update()
 
+    # Game Life cycle
+    def on_game_start(self, game):
+        self.ready()
+
+    def on_game_over(self, game):
+        # Learn last bad reward
+        self.action(game.state, game.last_reward)
+        if self.training:
+            self.repo.save_model_params(self.model, self.model_name)
+
+    def on_update(self, game):
+        pass
+
 def agent_play(game_class, model=None):
     player = AsciiGamePlayerAgent(model=model, model_name=game_class.__name__)
     replay_server = ReplayServer(int(os.environ.get("GAME_SERVER_PORT", 7000)))
 
     game = game_class(player)
     game.add_observer(replay_server)
+    game.add_observer(player)
 
     replay_server.run_as_background()
 
     while True:
+        replay_server.info = "e-Greedy=%s" % (player.use_greedy, )
         game.play()
-
+        if game.play_id % 10 == 0:
+            player.use_greedy = not player.use_greedy

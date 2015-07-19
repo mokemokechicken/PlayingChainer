@@ -70,12 +70,12 @@ class ReplayClient(object):
             game_info["screen_width"] = width
             game_info["screen_height"] = height
             screen = scene["screen"]
-            self.update_screen(game_info, screen, meta_info)
+            self.update_screen(game_info, screen, meta_info, replay_data.get("info", ""))
             t2 = time.time() - t1
             if t2 < self.SEC_PER_TURN:
                 time.sleep(self.SEC_PER_TURN - t2)
 
-    def update_screen(self, game, screen, meta):
+    def update_screen(self, game, screen, meta, info_str):
         for y in range(game["screen_height"]):
             line = "".join([chr(ch) for ch in screen[y]])
             ignore_error_add_str(self.main_window, y, 0, line)
@@ -87,16 +87,17 @@ class ReplayClient(object):
 
         self.info_window.clear()
         self.info_window.addstr(0, 2, "PlayID: %d    HighScore: %s" % (play_id, meta["high_score"]))
-        self.info_window.addstr(1, 2, "Turn: %s" % game["turn"])
-        self.info_window.addstr(2, 2, "Total Score: %s" % game["total_reward"])
-        self.info_window.addstr(3, 2, "This Reward: %s" % game["last_reward"])
-        self.info_window.addstr(4, 2, "=== Action ===")
-        self.info_window.addstr(5, 2, "Left : %d" % (keymap["LEFT"] & last_action > 0))
-        self.info_window.addstr(6, 2, "Right: %d" % (keymap["RIGHT"] & last_action > 0))
-        self.info_window.addstr(7, 2, "Up   : %d" % (keymap["UP"] & last_action > 0))
-        self.info_window.addstr(8, 2, "Down : %d" % (keymap["DOWN"] & last_action > 0))
-        self.info_window.addstr(9, 2, "A    : %d" % (keymap["A"] & last_action > 0))
-        self.info_window.addstr(10, 2, "B    : %d" % (keymap["B"] & last_action > 0))
+        self.info_window.addstr(1, 2, "Info: %s" % info_str)
+        self.info_window.addstr(2, 2, "Turn: %s" % game["turn"])
+        self.info_window.addstr(3, 2, "Total Score: %s" % game["total_reward"])
+        self.info_window.addstr(4, 2, "This Reward: %s" % game["last_reward"])
+        self.info_window.addstr(5, 2, "=== Action ===")
+        self.info_window.addstr(6, 2, "Left : %d" % (keymap["LEFT"] & last_action > 0))
+        self.info_window.addstr(7, 2, "Right: %d" % (keymap["RIGHT"] & last_action > 0))
+        self.info_window.addstr(8, 2, "Up   : %d" % (keymap["UP"] & last_action > 0))
+        self.info_window.addstr(9, 2, "Down : %d" % (keymap["DOWN"] & last_action > 0))
+        self.info_window.addstr(10, 2, "A    : %d" % (keymap["A"] & last_action > 0))
+        self.info_window.addstr(11, 2, "B    : %d" % (keymap["B"] & last_action > 0))
         self.info_window.refresh()
 
 def main(stdscr):

@@ -32,10 +32,10 @@ class GameRepository(object):
         model_path = self.get_model_path(model_name)
         if os.path.exists(model_path):
             with file(model_path, "rb") as f:
-                params = pickle.load(f)
-                model.copy_parameters_from(params)
+                model.parameters = pickle.load(f)
 
     def save_model_params(self, model, model_name):
         model_path = self.get_model_path(model_name)
-        with file(model_path, "wb") as f:
-            pickle.dump(model.parameters, f)
+        with file("%s.tmp" % model_path, "wb") as f:
+            pickle.dump(model.parameters, f, protocol=pickle.HIGHEST_PROTOCOL)
+        os.rename("%s.tmp" % model_path, model_path)

@@ -10,6 +10,8 @@ class ReplayServer(object):
     current_play = None
     MAX_SCENES = 10000
 
+    info = ""
+
     def __init__(self, port=None, host=None):
         self.port = port or 7000
         self.host = host or '0.0.0.0'
@@ -21,12 +23,16 @@ class ReplayServer(object):
 
     def serve_forever(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.bind((self.host, self.port))
-        sock.listen(1)
-        while True:
-            conn, address = sock.accept()
-            self.handle(conn)
-            conn.close()
+        try:
+            sock.bind((self.host, self.port))
+            sock.listen(1)
+            while True:
+                conn, address = sock.accept()
+                self.handle(conn)
+                conn.close()
+        finally:
+            if sock:
+                sock.close()
 
     def handle(self, conn):
         data = dumps(self.last_play,  HIGHEST_PROTOCOL)
@@ -36,6 +42,7 @@ class ReplayServer(object):
         self.current_play = {
             "size": [game.WIDTH, game.HEIGHT],
             "meta": game.meta_info(),
+            "info": self.info,
             "scenes": [],
         }
 
