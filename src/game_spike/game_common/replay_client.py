@@ -3,6 +3,7 @@
 
 __author__ = 'k_morishita'
 
+import os
 from cPickle import loads
 import curses
 import socket
@@ -99,7 +100,9 @@ class ReplayClient(object):
         self.info_window.refresh()
 
 def main(stdscr):
-    client = ReplayClient(stdscr, 'localhost', 7000)
+    port = int(os.environ.get("GAME_SERVER_PORT", 7000))
+    host = os.environ.get("GAME_SERVER_HOST", 'localhost')
+    client = ReplayClient(stdscr, host, port)
     client.replay_forever()
 
 

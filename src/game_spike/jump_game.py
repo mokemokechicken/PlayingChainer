@@ -3,16 +3,10 @@
 
 __author__ = 'k_morishita'
 
-import curses
 from random import random
 
-
-from game_common.debug_util import DebugHumanPlayer, ConsoleDebugObserver
-from game_common.replay_server import ReplayServer
 from game_common.base_system import AsciiGame, Screen
-
-
-# ####### Game Dependent
+from game_common.debug_game import debug_game
 
 class State(object):
     screen = None
@@ -82,22 +76,5 @@ class JumpGame(AsciiGame):
                     state.power += 1
                 state.jumping_down = False
 
-
-
-def human_play(stdscr):
-    player = DebugHumanPlayer(stdscr)
-    console = ConsoleDebugObserver(stdscr)
-    replay_server = ReplayServer(7000)
-
-    game = JumpGame(player)
-    game.add_observer(console)
-    game.add_observer(replay_server)
-
-    player.setup(game)
-    console.setup(game)
-    replay_server.run_as_background()
-
-    while True:
-        game.play()
-
-curses.wrapper(human_play)
+if __name__ == '__main__':
+    debug_game(JumpGame)
