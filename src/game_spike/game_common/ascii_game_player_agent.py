@@ -3,11 +3,9 @@ __author__ = 'k_morishita'
 
 import os
 from random import random, randint
-import datetime
 
 import numpy as np
-from chainer import FunctionSet, Variable, optimizers
-import chainer.functions as F
+from chainer import Variable, optimizers
 
 from game_repository import GameRepository
 from replay_server import ReplayServer
@@ -25,27 +23,20 @@ class AsciiGamePlayerAgent(object):
     training = True
     use_greedy = True
 
-    def __init__(self, model=None, repo=None, model_name=None):
+    def __init__(self, agent_model, repo=None):
         """
 
-        :type model: FunctionSet
+        :type agent_model: AgentModel
         """
-        self.actions = range(64)
-        self.model_name = model_name or ('created_%s' % datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
-        self.model = model or FunctionSet(
-            l1=F.Linear(40*24, 800),
-            l2=F.Linear(800, 500),
-            l3=F.Linear(500, 300),
-            l4=F.Linear(300, len(self.actions)),
-        )
-        self.in_size = len(self.model.l1.W[0])
+        self.agent_model = agent_model
+        self.actions = range(self.agent_model.out_size)
         self.repo = repo or GameRepository()
         self.load_model_parameters()
 
     def load_model_parameters(self):
-        self.repo.load_model_params(self.model, self.model_name)
+        self.repo.load_model_params(self.agent_model)
         self.optimizer = optimizers.SGD()
-        self.optimizer.setup(self.model.collect_parameters())
+        self.optimizer.setup(self.agent_model.function_set.collect_parameters())
 
     def ready(self):
         self.last_action = None
@@ -59,19 +50,12 @@ class AsciiGamePlayerAgent(object):
         return self.actions[next_action]
 
     def convert_state_to_input(self, state):
-        in_data = ((state.screen.data - 32) / 96.0).astype('float32').reshape(self.in_size)
+        in_data = ((state.screen.data - 32) / 96.0).astype('float32').reshape(self.agent_model.in_size)
         return Variable(np.array([in_data]))
 
     def forward(self, state):
         x = self.convert_state_to_input(state)
-        y = None
-        for i in range(1, 1000):  # 1000 は適当な数
-            if hasattr(self.model, "l%d" % i):
-                x = getattr(self.model, "l%d" % i)(x)
-            else:
-                y = x
-                break
-        return y
+        return self.agent_model.forward(x)
 
     def select_action(self, state):
         self.last_q_list = self.forward(state)
@@ -91,6 +75,7 @@ class AsciiGamePlayerAgent(object):
         loss.grad = np.array([[self.ALPHA]], dtype=np.float32)
         loss.backward()
         self.optimizer.update()
+        self.agent_model.on_learn(times=len(tt))
 
     # Game Life cycle
     def on_game_start(self, game):
@@ -100,13 +85,13 @@ class AsciiGamePlayerAgent(object):
         # Learn last bad reward
         self.action(game.state, game.last_reward)
         if self.training:
-            self.repo.save_model_params(self.model, self.model_name)
+            self.repo.save_model_params(self.agent_model)
 
     def on_update(self, game):
         pass
 
-def agent_play(game_class, model=None):
-    player = AsciiGamePlayerAgent(model=model, model_name=game_class.__name__)
+def agent_play(game_class, agent_model):
+    player = AsciiGamePlayerAgent(agent_model)
     replay_server = ReplayServer(int(os.environ.get("GAME_SERVER_PORT", 7000)))
 
     game = game_class(player)
@@ -116,7 +101,7 @@ def agent_play(game_class, model=None):
     replay_server.run_as_background()
 
     while True:
-        replay_server.info = "e-Greedy=%s" % (player.use_greedy, )
+        replay_server.info = ["e-Greedy=%s" % player.use_greedy, agent_model.meta_str()]
         game.play()
         if game.play_id % 10 == 0:
             player.use_greedy = not player.use_greedy

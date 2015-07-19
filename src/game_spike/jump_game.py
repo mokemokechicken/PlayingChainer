@@ -1,14 +1,19 @@
 #!/usr/bin/env python
 # coding: utf-8
-import os
 
 __author__ = 'k_morishita'
 
+import os
 from random import random
+
+from chainer import FunctionSet
+import chainer.functions as F
 
 from game_common.base_system import AsciiGame, Screen
 from game_common.debug_game import debug_game
 from game_common.ascii_game_player_agent import agent_play
+from game_common.agent_model import AgentModel
+
 
 class State(object):
     screen = None
@@ -63,8 +68,8 @@ class JumpGame(AsciiGame):
     def move_player(self, state, action):
         # MOVE Player
         self.draw_player(erase=True)
-        # action > 0 means ANY KEY
-        if action > 0 and state.power > 0 and not state.jumping_down:
+        jump_key_pressed = action & self.BUTTON_A
+        if jump_key_pressed and state.power > 0 and not state.jumping_down:
             state.power -= 1
             if state.power == 0:
                 state.jumping_down = True
@@ -82,4 +87,11 @@ if __name__ == '__main__':
     if os.environ.get("DEBUG", None):
         debug_game(JumpGame)
     else:
-        agent_play(JumpGame)
+        chainer_model = FunctionSet(
+            l1=F.Linear(40*24, 800),
+            l2=F.Linear(800, 500),
+            l3=F.Linear(500, 300),
+            l4=F.Linear(300, 64),
+        )
+        model = AgentModel(chainer_model, 'JumpGame', in_size=JumpGame.WIDTH*JumpGame.HEIGHT, out_size=64)
+        agent_play(JumpGame, agent_model=model)

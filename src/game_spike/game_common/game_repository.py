@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf-8
+
 import cPickle as pickle
 import os
-import time
 
 __author__ = 'k_morishita'
 
@@ -24,18 +24,28 @@ class GameRepository(object):
     def get_model_path(self, model_name):
         return "%s/%s.pkl" % (self.model_dir, model_name)
 
-    def load_model_params(self, model, model_name):
+    def load_model_params(self, agent_model):
         """
 
-        :type model: FunctionSet
+        :type agent_model: AgentModel
         """
-        model_path = self.get_model_path(model_name)
+        model_path = self.get_model_path(agent_model.model_name)
         if os.path.exists(model_path):
             with file(model_path, "rb") as f:
-                model.parameters = pickle.load(f)
+                data = pickle.load(f)
+                agent_model.function_set.parameters = data["parameters"]
+                agent_model.meta = data["meta"]
 
-    def save_model_params(self, model, model_name):
-        model_path = self.get_model_path(model_name)
+    def save_model_params(self, agent_model):
+        """
+
+        :type agent_model: AgentModel
+        """
+        model_path = self.get_model_path(agent_model.model_name)
         with file("%s.tmp" % model_path, "wb") as f:
-            pickle.dump(model.parameters, f, protocol=pickle.HIGHEST_PROTOCOL)
+            data = {
+                "parameters": agent_model.function_set.parameters,
+                "meta": agent_model.meta,
+            }
+            pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)
         os.rename("%s.tmp" % model_path, model_path)

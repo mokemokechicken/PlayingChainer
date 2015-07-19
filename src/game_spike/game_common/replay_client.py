@@ -70,12 +70,12 @@ class ReplayClient(object):
             game_info["screen_width"] = width
             game_info["screen_height"] = height
             screen = scene["screen"]
-            self.update_screen(game_info, screen, meta_info, replay_data.get("info", ""))
+            self.update_screen(game_info, screen, meta_info, replay_data.get("info", []))
             t2 = time.time() - t1
             if t2 < self.SEC_PER_TURN:
                 time.sleep(self.SEC_PER_TURN - t2)
 
-    def update_screen(self, game, screen, meta, info_str):
+    def update_screen(self, game, screen, meta, extra_info_list):
         for y in range(game["screen_height"]):
             line = "".join([chr(ch) for ch in screen[y]])
             ignore_error_add_str(self.main_window, y, 0, line)
@@ -86,19 +86,27 @@ class ReplayClient(object):
         play_id = meta["play_id"]
 
         self.info_window.clear()
-        self.info_window.addstr(0, 2, "PlayID: %d    HighScore: %s" % (play_id, meta["high_score"]))
-        self.info_window.addstr(1, 2, "Info: %s" % info_str)
-        self.info_window.addstr(2, 2, "Turn: %s" % game["turn"])
-        self.info_window.addstr(3, 2, "Total Score: %s" % game["total_reward"])
-        self.info_window.addstr(4, 2, "This Reward: %s" % game["last_reward"])
-        self.info_window.addstr(5, 2, "=== Action ===")
-        self.info_window.addstr(6, 2, "Left : %d" % (keymap["LEFT"] & last_action > 0))
-        self.info_window.addstr(7, 2, "Right: %d" % (keymap["RIGHT"] & last_action > 0))
-        self.info_window.addstr(8, 2, "Up   : %d" % (keymap["UP"] & last_action > 0))
-        self.info_window.addstr(9, 2, "Down : %d" % (keymap["DOWN"] & last_action > 0))
-        self.info_window.addstr(10, 2, "A    : %d" % (keymap["A"] & last_action > 0))
-        self.info_window.addstr(11, 2, "B    : %d" % (keymap["B"] & last_action > 0))
+        info_list = [
+            "PlayID: %d    HighScore: %s" % (play_id, meta["high_score"]),
+            "Turn: %s" % game["turn"],
+            "Total Score: %s" % game["total_reward"],
+            "This Reward: %s" % game["last_reward"],
+            "=== Action ===",
+            "Left : %d" % (keymap["LEFT"] & last_action > 0),
+            "Right: %d" % (keymap["RIGHT"] & last_action > 0),
+            "Up   : %d" % (keymap["UP"] & last_action > 0),
+            "Down : %d" % (keymap["DOWN"] & last_action > 0),
+            "A    : %d" % (keymap["A"] & last_action > 0),
+            "B    : %d" % (keymap["B"] & last_action > 0),
+            "=== Info ===",
+            ]
+        info_list += extra_info_list
+        self.write_info_lines(info_list)
         self.info_window.refresh()
+
+    def write_info_lines(self, info_list):
+        for i, info_str in enumerate(info_list):
+            self.info_window.addstr(i, 2, info_str)
 
 def main(stdscr):
     port = int(os.environ.get("GAME_SERVER_PORT", 7000))
