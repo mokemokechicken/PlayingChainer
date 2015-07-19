@@ -29,7 +29,7 @@ class JumpGame(AsciiGame):
     SPACE = ord(" ")
     space_rate = 0.2
     PY_MAX = 20
-    POWER_MAX = 8
+    POWER_MAX = 3
 
     # must be defined
     def prepare_game(self):
@@ -53,6 +53,9 @@ class JumpGame(AsciiGame):
         # key penalty
         if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
             reward -= 0.1
+
+        if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE: # 穴の上では報酬がある
+            reward += 0.1
 
         # game over?
         if state.py == self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:
@@ -100,18 +103,22 @@ class JumpGame(AsciiGame):
                 state.jumping_down = True
             else:
                 if state.power < self.POWER_MAX:
-                    state.power += 1
+                    state.power = self.POWER_MAX
                 state.jumping_down = False
 
 if __name__ == '__main__':
     if os.environ.get("DEBUG", None):
         debug_game(JumpGame)
     else:
+        HISTORY_SIZE = 4
+        # (screen_size - ksize) / stride + 1
         chainer_model = FunctionSet(
-            l1=F.Linear(40*24, 800),
-            l2=F.Linear(800, 500),
-            l3=F.Linear(500, 300),
-            l4=F.Linear(300, 64),
+            l1=F.Convolution2D(HISTORY_SIZE, 3, ksize=1, stride=1),  # 履歴を3つのW*Hのチャネルにする
+            l2=F.Linear(JumpGame.WIDTH*JumpGame.HEIGHT*3, 800),      # ので、ここのINは W*H*3になる
+            l3=F.Linear(800, 500),
+            l4=F.Linear(500, 300),
+            l5=F.Linear(300, 64),
         )
-        model = AgentModel(chainer_model, 'JumpGame', in_size=JumpGame.WIDTH*JumpGame.HEIGHT, out_size=64)
+        model = AgentModel(chainer_model, 'JumpGame',
+                           width=JumpGame.WIDTH, height=JumpGame.HEIGHT, history_size=HISTORY_SIZE, out_size=64)
         agent_play(JumpGame, agent_model=model)

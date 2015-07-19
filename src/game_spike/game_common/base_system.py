@@ -15,7 +15,7 @@ class Game(object):
     total_reward = None
     is_game_over = None
     last_action = None
-    high_score = 0
+    high_score = -10000
 
     def __init__(self, player):
         self.player = player

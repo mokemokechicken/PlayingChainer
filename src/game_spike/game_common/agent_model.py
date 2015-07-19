@@ -7,10 +7,13 @@ __author__ = 'k_morishita'
 class AgentModel(object):
     meta = {}
 
-    def __init__(self, model, model_name, in_size, out_size):
+    def __init__(self, model, model_name, width, height, history_size, out_size):
         self.function_set = model
         self.model_name = model_name or ('created_%s' % datetime.datetime.now().strftime('%Y%m%d_%H%M%S'))
-        self.in_size = in_size
+        self.width = width
+        self.height = height
+        self.history_size = history_size
+        self.in_size = width * height * self.history_size
         self.out_size = out_size
         self.meta['name'] = self.model_name
 
