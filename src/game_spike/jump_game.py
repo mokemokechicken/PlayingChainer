@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
+import itertools
 
 __author__ = 'k_morishita'
 
@@ -46,13 +47,26 @@ class JumpGame(AsciiGame):
         screen[self.PY_MAX+1, self.WIDTH-1] = self.gen_block_or_space()
         self.draw_player()
 
-        # game over?
+        ######## decide reward
         reward = 0.05
+
+        # key penalty
+        if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
+            reward -= 0.1
+
+        # game over?
         if state.py == self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:
             self.is_game_over = True
             reward = -1
 
         return state, reward
+
+    def effective_actions(self):
+        ret = set()
+        key_combinations = [(0, self.BUTTON_A), (0, self.KEY_LEFT, self.KEY_RIGHT)]
+        for key_code_list in itertools.product(*key_combinations):
+            ret.add(reduce(lambda t, x: t | x, key_code_list))
+        return list(ret)
 
     def init_course(self):
         self.state.screen.fill(self.SPACE)
@@ -68,6 +82,12 @@ class JumpGame(AsciiGame):
     def move_player(self, state, action):
         # MOVE Player
         self.draw_player(erase=True)
+
+        if action & self.KEY_LEFT and state.px > 0:
+            state.px -= 1
+        if action & self.KEY_RIGHT and state.px < self.WIDTH-1:
+            state.px += 1
+
         jump_key_pressed = action & self.BUTTON_A
         if jump_key_pressed and state.power > 0 and not state.jumping_down:
             state.power -= 1

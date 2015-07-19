@@ -2,7 +2,7 @@
 __author__ = 'k_morishita'
 
 import os
-from random import random, randint
+from random import random, randint, choice
 
 import numpy as np
 from chainer import Variable, optimizers
@@ -32,6 +32,7 @@ class AsciiGamePlayerAgent(object):
         self.actions = range(self.agent_model.out_size)
         self.repo = repo or GameRepository()
         self.load_model_parameters()
+        self.effective_action_index_list = range(len(self.actions))
 
     def load_model_parameters(self):
         self.repo.load_model_params(self.agent_model)
@@ -60,7 +61,7 @@ class AsciiGamePlayerAgent(object):
     def select_action(self, state):
         self.last_q_list = self.forward(state)
         if self.use_greedy and random() < self.E_GREEDY:
-            return randint(0, len(self.actions)-1)
+            return choice(self.effective_action_index_list)
         else:
             return np.argmax(self.last_q_list.data)
 
@@ -99,6 +100,8 @@ def agent_play(game_class, agent_model):
     game.add_observer(player)
 
     replay_server.run_as_background()
+
+    player.effective_action_index_list = game.effective_actions()
 
     while True:
         replay_server.info = ["e-Greedy=%s" % player.use_greedy, agent_model.meta_str()]
