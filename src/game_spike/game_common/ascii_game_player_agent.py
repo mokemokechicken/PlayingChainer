@@ -54,7 +54,7 @@ class AsciiGamePlayerAgent(object):
         return self.actions[next_action]
 
     def convert_state_to_input(self, state):
-        in_data = ((state.screen.data - 32) / 96.0).astype('float32')  # .reshape(self.agent_model.in_size)
+        in_data = self.agent_model.convert_state_to_input(state)
         self.history_data = np.roll(self.history_data, -1, axis=0)
         self.history_data[self.agent_model.history_size-1] = in_data
         return Variable(self.history_data.reshape((1, self.agent_model.history_size,

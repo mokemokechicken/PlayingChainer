@@ -1,8 +1,12 @@
 # coding: utf-8
-import datetime
 
 __author__ = 'k_morishita'
 
+
+import datetime
+import numpy as np
+from chainer import cuda, Function, FunctionSet, gradient_check, Variable, optimizers
+import chainer.functions as F
 
 class AgentModel(object):
     meta = {}
@@ -28,8 +32,22 @@ class AgentModel(object):
                 break
         return y
 
+    def convert_state_to_input(self, state):
+        return ((state.screen.data - 32) / 96.0).astype('float32')
+
     def on_learn(self, times):
         self.meta['learn_times'] = self.meta.get('learn_times', 0) + times
 
     def meta_str(self):
         return "name=%s learn_times=%s" % (self.model_name, self.meta.get('learn_times'))
+
+
+class EmbedAgentModel(AgentModel):
+    def __init__(self, embed_out_size, width, *args, **kw):
+        super(EmbedAgentModel, self).__init__(width=width*embed_out_size, *args, **kw)
+        self.embed_out_size = embed_out_size
+        self._W = np.random.randn(96, embed_out_size).astype(np.float32)
+
+    def convert_state_to_input(self, state):
+        return self._W[state.screen.data - 32].reshape(self.height, self.width)
+

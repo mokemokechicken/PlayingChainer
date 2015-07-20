@@ -1,11 +1,11 @@
 #!/usr/bin/env python
 # coding: utf-8
-import itertools
 
 __author__ = 'k_morishita'
 
 import os
 from random import random
+import itertools
 
 from chainer import FunctionSet
 import chainer.functions as F
@@ -14,6 +14,7 @@ from game_common.base_system import AsciiGame, Screen
 from game_common.debug_game import debug_game
 from game_common.ascii_game_player_agent import agent_play
 from game_common.agent_model import AgentModel
+from game_common.agent_model import EmbedAgentModel
 
 
 class State(object):
@@ -64,6 +65,7 @@ class JumpGame(AsciiGame):
 
         return state, reward
 
+    # should be defined
     def effective_actions(self):
         ret = set()
         key_combinations = [(0, self.BUTTON_A), (0, self.KEY_LEFT, self.KEY_RIGHT)]
@@ -71,6 +73,7 @@ class JumpGame(AsciiGame):
             ret.add(reduce(lambda t, x: t | x, key_code_list))
         return list(ret)
 
+    # private methods
     def init_course(self):
         self.state.screen.fill(self.SPACE)
         self.state.screen[self.PY_MAX+1] = [self.gen_block_or_space(0.05) for _ in range(self.WIDTH)]
@@ -107,18 +110,45 @@ class JumpGame(AsciiGame):
                 state.jumping_down = False
 
 if __name__ == '__main__':
+    def calc_output_size(screen_size, ksize, stride):
+        return (screen_size - ksize) / stride + 1
+
     if os.environ.get("DEBUG", None):
+        print "Debug Mode"
         debug_game(JumpGame)
-    else:
+    elif os.environ.get("IN_TYPE", None) == 'id':
+        print "EmbedID Mode"
         HISTORY_SIZE = 4
-        # (screen_size - ksize) / stride + 1
+        PATTERN_SIZE = 100
+        EMBED_OUT_SIZE = 4
+        KSIZE = (8, 8*EMBED_OUT_SIZE)
+        STRIDE = (4, 4*EMBED_OUT_SIZE)
+        nw = calc_output_size(JumpGame.WIDTH*EMBED_OUT_SIZE, KSIZE[1], STRIDE[1])   # 9
+        nh = calc_output_size(JumpGame.HEIGHT, KSIZE[0], STRIDE[0])  # 5
         chainer_model = FunctionSet(
-            l1=F.Convolution2D(HISTORY_SIZE, 3, ksize=1, stride=1),  # 履歴を3つのW*Hのチャネルにする
-            l2=F.Linear(JumpGame.WIDTH*JumpGame.HEIGHT*3, 800),      # ので、ここのINは W*H*3になる
-            l3=F.Linear(800, 500),
-            l4=F.Linear(500, 300),
-            l5=F.Linear(300, 64),
+            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
+            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
+            l3=F.Linear(800, 400),
+            l4=F.Linear(400, 64),
         )
-        model = AgentModel(chainer_model, 'JumpGame',
-                           width=JumpGame.WIDTH, height=JumpGame.HEIGHT, history_size=HISTORY_SIZE, out_size=64)
+        model = EmbedAgentModel(model=chainer_model, model_name='JumpGameEmbedModel',
+                                embed_out_size=EMBED_OUT_SIZE,
+                                width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
+                                history_size=HISTORY_SIZE, out_size=64)
+        agent_play(JumpGame, agent_model=model)
+    else:
+        print "Ver1 Mode"
+        HISTORY_SIZE = 4
+        PATTERN_SIZE = 100
+        nw = calc_output_size(JumpGame.WIDTH, 8, 4)   # 9
+        nh = calc_output_size(JumpGame.HEIGHT, 8, 4)  # 5
+        chainer_model = FunctionSet(
+            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=8, stride=4),
+            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
+            l3=F.Linear(800, 400),
+            l4=F.Linear(400, 64),
+        )
+        model = AgentModel(model=chainer_model, model_name='JumpGame',
+                           width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
+                           history_size=HISTORY_SIZE, out_size=64)
         agent_play(JumpGame, agent_model=model)
