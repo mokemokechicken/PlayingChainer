@@ -75,7 +75,7 @@ class State(object):
 
     def __init__(self):
         self.player_pos = Pos(20, 12)
-        self.enemy_list = [EnemyX(Pos(3, 3), 4), EnemyY(Pos(37, 21), 3)]
+        self.enemy_list = [EnemyX(Pos(3, 3), 3), EnemyY(Pos(37, 21), 2)]
         self.treasure_list = []
         self.treasure_pop_timer = 0
 
@@ -87,6 +87,7 @@ class TreasureGame(AsciiGame):
 
     LIFE_OF_TREASURE = 40
     TREASURE_POP_SPAN = 8
+    MAX_TURN = 800
 
     # must be defined
     def prepare_game(self):
@@ -109,15 +110,15 @@ class TreasureGame(AsciiGame):
         # decide reward
         reward = 0
 
-        # key penalty -0.1
+        # key penalty -0.5
         if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
-            reward -= 0.1
+            reward -= 0.5
 
-        # got treasure? +0.5
+        # got treasure? +0.1
         pos = state.player_pos
         for t in copy.copy(state.treasure_list):
             if t.pos == pos:
-                reward += 0.5
+                reward += 0.1
                 state.treasure_list.remove(t)
 
         # game over?
@@ -126,6 +127,9 @@ class TreasureGame(AsciiGame):
                 self.is_game_over = True
                 reward = -1
                 break
+
+        if self.turn == self.MAX_TURN:
+            self.is_game_over = True
 
         self.draw()
         return state, reward
