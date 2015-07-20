@@ -128,16 +128,17 @@ if __name__ == '__main__':
         chainer_model = FunctionSet(
             l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
             l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
-            l3=F.Linear(800, 400),
-            l4=F.Linear(400, 64),
+            l3=F.Linear(800, 64),
+            # l3=F.Linear(800, 400),
+            # l4=F.Linear(400, 64),
         )
         model = EmbedAgentModel(model=chainer_model, model_name='JumpGameEmbedModel',
                                 embed_out_size=EMBED_OUT_SIZE,
                                 width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
                                 history_size=HISTORY_SIZE, out_size=64)
-        model.activate_functions["l1"] = F.sigmoid
-        model.activate_functions["l2"] = F.sigmoid
-        model.activate_functions["l3"] = F.sigmoid
+        model.activate_functions["l1"] = F.relu
+        model.activate_functions["l2"] = F.relu
+        # model.activate_functions["l3"] = F.relu
         agent_play(JumpGame, agent_model=model)
     else:
         print "Ver1 Mode"

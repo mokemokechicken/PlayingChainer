@@ -34,7 +34,7 @@ class GameRepository(object):
             with file(model_path, "rb") as f:
                 data = pickle.load(f)
                 agent_model.function_set.parameters = data["parameters"]
-                agent_model.set_extra_params(data["extra_params"])
+                agent_model.set_extra_params(data.get("extra_params"))
                 agent_model.meta = data["meta"]
 
     def save_model_params(self, agent_model):
