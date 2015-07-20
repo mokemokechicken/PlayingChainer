@@ -79,6 +79,8 @@ class AsciiGamePlayerAgent(object):
         tt[0][last_action] = target_val
         target = Variable(tt)
         loss = 0.5 * (target - self.last_q_list) ** 2
+        if is_debug():
+            print "Q max=%s, loss=%s" % (np.max(self.last_q_list.data), loss.data[0][last_action])
         loss.grad = np.array([[self.ALPHA]], dtype=np.float32)
         loss.backward()
         self.optimizer.update()
@@ -97,6 +99,9 @@ class AsciiGamePlayerAgent(object):
     def on_update(self, game):
         pass
 
+def is_debug():
+    return os.environ.get("DEBUG", None) is not None
+
 def agent_play(game_class, agent_model):
     player = AsciiGamePlayerAgent(agent_model)
     replay_server = ReplayServer(int(os.environ.get("GAME_SERVER_PORT", 7000)))
@@ -110,7 +115,7 @@ def agent_play(game_class, agent_model):
     player.effective_action_index_list = game.effective_actions()
 
     while True:
-        replay_server.info = ["e-Greedy=%s" % player.use_greedy, agent_model.meta_str()]
+        replay_server.info = ["e-Greedy=%s" % player.use_greedy] + agent_model.info_list()
         game.play()
         if game.play_id % 10 == 0:
             player.use_greedy = not player.use_greedy

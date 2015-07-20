@@ -10,6 +10,7 @@ import chainer.functions as F
 
 class AgentModel(object):
     meta = {}
+    activate_functions = {}
 
     def __init__(self, model, model_name, width, height, history_size, out_size):
         self.function_set = model
@@ -25,12 +26,24 @@ class AgentModel(object):
         x = in_variable
         y = None
         for i in range(1, 1000):  # 1000 は適当な数
-            if hasattr(self.function_set, "l%d" % i):
-                x = getattr(self.function_set, "l%d" % i)(x)
+            name = "l%d" % i
+            if hasattr(self.function_set, name):
+                li = getattr(self.function_set, name)
+                if self.activate_functions.get(name):
+                    func = self.activate_functions.get(name)
+                    x = func(li(x))
+                else:
+                    x = li(x)
             else:
                 y = x
                 break
         return y
+
+    def get_extra_params(self):
+        return []
+
+    def set_extra_params(self, params):
+        pass
 
     def convert_state_to_input(self, state):
         return ((state.screen.data - 32) / 96.0).astype('float32')
@@ -38,8 +51,11 @@ class AgentModel(object):
     def on_learn(self, times):
         self.meta['learn_times'] = self.meta.get('learn_times', 0) + times
 
-    def meta_str(self):
-        return "name=%s learn_times=%s" % (self.model_name, self.meta.get('learn_times'))
+    def info_list(self):
+        return [
+            "name=%s" % self.model_name,
+            "LearnTimes=%s" % self.meta.get('learn_times'),
+        ]
 
 
 class EmbedAgentModel(AgentModel):
@@ -47,7 +63,13 @@ class EmbedAgentModel(AgentModel):
         super(EmbedAgentModel, self).__init__(width=width*embed_out_size, *args, **kw)
         self.embed_out_size = embed_out_size
         self._W = np.random.randn(96, embed_out_size).astype(np.float32)
+        self._W[0] = np.zeros([embed_out_size], dtype=np.float32)
 
     def convert_state_to_input(self, state):
         return self._W[state.screen.data - 32].reshape(self.height, self.width)
 
+    def get_extra_params(self):
+        return [self._W]
+
+    def set_extra_params(self, params):
+        self._W = params[0]

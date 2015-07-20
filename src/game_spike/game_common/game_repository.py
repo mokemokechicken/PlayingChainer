@@ -34,6 +34,7 @@ class GameRepository(object):
             with file(model_path, "rb") as f:
                 data = pickle.load(f)
                 agent_model.function_set.parameters = data["parameters"]
+                agent_model.set_extra_params(data["extra_params"])
                 agent_model.meta = data["meta"]
 
     def save_model_params(self, agent_model):
@@ -45,6 +46,7 @@ class GameRepository(object):
         with file("%s.tmp" % model_path, "wb") as f:
             data = {
                 "parameters": agent_model.function_set.parameters,
+                "extra_params": agent_model.get_extra_params(),
                 "meta": agent_model.meta,
             }
             pickle.dump(data, f, protocol=pickle.HIGHEST_PROTOCOL)

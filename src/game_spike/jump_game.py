@@ -113,7 +113,7 @@ if __name__ == '__main__':
     def calc_output_size(screen_size, ksize, stride):
         return (screen_size - ksize) / stride + 1
 
-    if os.environ.get("DEBUG", None):
+    if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
         debug_game(JumpGame)
     elif os.environ.get("IN_TYPE", None) == 'id':
@@ -135,6 +135,9 @@ if __name__ == '__main__':
                                 embed_out_size=EMBED_OUT_SIZE,
                                 width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
                                 history_size=HISTORY_SIZE, out_size=64)
+        model.activate_functions["l1"] = F.sigmoid
+        model.activate_functions["l2"] = F.sigmoid
+        model.activate_functions["l3"] = F.sigmoid
         agent_play(JumpGame, agent_model=model)
     else:
         print "Ver1 Mode"
