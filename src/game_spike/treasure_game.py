@@ -37,7 +37,7 @@ class Enemy(object):
         self.counter = counter_max
 
     def move(self, state):
-        self.counter -= 0
+        self.counter -= 1
         if self.counter == 0:
             self.counter = self.counter_max
             self.do_move(state)
@@ -55,8 +55,8 @@ class EnemyX(Enemy):
     CHAR = ord("X")
 
     def do_move(self, state):
-        self.pos.x = sign(state.player_pos.x - self.pos.x)
-        self.pos.y = sign(state.player_pos.y - self.pos.y)
+        self.pos.x += sign(state.player_pos.x - self.pos.x)
+        self.pos.y += sign(state.player_pos.y - self.pos.y)
 
 class EnemyY(Enemy):
     """ちょっと速いけど、縦か横にしか動けない"""
@@ -66,16 +66,19 @@ class EnemyY(Enemy):
         dx = state.player_pos.x - self.pos.x
         dy = state.player_pos.y - self.pos.y
         if abs(dx) <= abs(dy):
-            self.pos.y = sign(state.player_pos.y - self.pos.y)
+            self.pos.y += sign(state.player_pos.y - self.pos.y)
         else:
-            self.pos.x = sign(state.player_pos.x - self.pos.x)
+            self.pos.x += sign(state.player_pos.x - self.pos.x)
 
 class State(object):
     screen = None
-    player_pos = Pos(20, 12)
-    enemy_list = [EnemyX(Pos(3, 3), 4), EnemyY(Pos(37, 21), 3)]
-    treasure_list = []
-    treasure_pop_timer = 0
+
+    def __init__(self):
+        self.player_pos = Pos(20, 12)
+        self.enemy_list = [EnemyX(Pos(3, 3), 4), EnemyY(Pos(37, 21), 3)]
+        self.treasure_list = []
+        self.treasure_pop_timer = 0
+
 
 class TreasureGame(AsciiGame):
     SPACE = ord(" ")
@@ -83,7 +86,7 @@ class TreasureGame(AsciiGame):
     TREASURE = ord("$")
 
     LIFE_OF_TREASURE = 40
-    TREASURE_POP_SPAN = 20
+    TREASURE_POP_SPAN = 8
 
     # must be defined
     def prepare_game(self):
@@ -103,7 +106,7 @@ class TreasureGame(AsciiGame):
             state.treasure_pop_timer = 0
             self.pop_treasure()
 
-        ######## decide reward
+        # decide reward
         reward = 0
 
         # key penalty -0.1
@@ -124,6 +127,7 @@ class TreasureGame(AsciiGame):
                 reward = -1
                 break
 
+        self.draw()
         return state, reward
 
     # should be defined
