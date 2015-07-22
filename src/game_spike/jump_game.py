@@ -12,7 +12,7 @@ import chainer.functions as F
 
 from game_common.base_system import AsciiGame, Screen
 from game_common.debug_game import debug_game
-from game_common.ascii_game_player_agent import agent_play
+from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import AgentModel
 from game_common.agent_model import EmbedAgentModel
 
@@ -139,7 +139,8 @@ if __name__ == '__main__':
         model.activate_functions["l1"] = F.relu
         model.activate_functions["l2"] = F.relu
         # model.activate_functions["l3"] = F.relu
-        agent_play(JumpGame, agent_model=model)
+        player = AsciiGamePlayerAgent(model)
+        agent_play(JumpGame, player)
     else:
         print "Ver1 Mode"
         HISTORY_SIZE = 4
@@ -155,4 +156,5 @@ if __name__ == '__main__':
         model = AgentModel(model=chainer_model, model_name='JumpGame',
                            width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
                            history_size=HISTORY_SIZE, out_size=64)
-        agent_play(JumpGame, agent_model=model)
+        player = AsciiGamePlayerAgent(model)
+        agent_play(JumpGame, player)

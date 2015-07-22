@@ -14,8 +14,9 @@ import chainer.functions as F
 
 from game_common.base_system import AsciiGame, Screen
 from game_common.debug_game import debug_game
-from game_common.ascii_game_player_agent import agent_play
+from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import EmbedAgentModel
+
 
 class Pos(object):
     def __init__(self, x=0, y=0):
@@ -26,9 +27,8 @@ class Pos(object):
         return isinstance(other, Pos) and self.x == other.x and self.y == other.y
 
 class Treasure(object):
-    def __init__(self, pos, time):
+    def __init__(self, pos):
         self.pos = pos
-        self.time = time
 
 class Enemy(object):
     def __init__(self, pos, counter_max):
@@ -85,8 +85,7 @@ class TreasureGame(AsciiGame):
     PLAYER = ord("A")
     TREASURE = ord("$")
 
-    LIFE_OF_TREASURE = 40
-    TREASURE_POP_SPAN = 8
+    NUM_TREASURES = 100
     MAX_TURN = 800
 
     # must be defined
@@ -100,12 +99,6 @@ class TreasureGame(AsciiGame):
     def get_next_state_and_reward(self, state, action):
         self.move_player(state, action)
         self.move_enemies(state)
-        self.count_down_treasures()
-
-        state.treasure_pop_timer += 1
-        if state.treasure_pop_timer == self.TREASURE_POP_SPAN:
-            state.treasure_pop_timer = 0
-            self.pop_treasure()
 
         # decide reward
         reward = 0
@@ -120,6 +113,8 @@ class TreasureGame(AsciiGame):
             if t.pos == pos:
                 reward += 0.1
                 state.treasure_list.remove(t)
+                if len(state.treasure_list) == 0:
+                    self.pop_treasures()
 
         # game over?
         for e in self.state.enemy_list:
@@ -145,8 +140,7 @@ class TreasureGame(AsciiGame):
     # private methods
     def init_course(self):
         self.state.screen.fill(self.SPACE)
-        for _ in range(5):
-            self.pop_treasure()
+        self.pop_treasures()
 
     def draw(self):
         screen = self.state.screen
@@ -157,11 +151,15 @@ class TreasureGame(AsciiGame):
         for e in self.state.enemy_list:
             screen[e.pos.y, e.pos.x] = e.CHAR
 
+    def pop_treasures(self):
+        for _ in range(self.NUM_TREASURES):
+            self.pop_treasure()
+
     def pop_treasure(self):
         while True:
             pos = Pos(randint(0, self.WIDTH-1), randint(0, self.HEIGHT-1))
             if self.state.screen[pos.y, pos.x] == self.SPACE:
-                t = Treasure(pos, self.LIFE_OF_TREASURE)
+                t = Treasure(pos)
                 self.state.treasure_list.append(t)
                 break
 
@@ -179,12 +177,6 @@ class TreasureGame(AsciiGame):
     def move_enemies(self, state):
         for e in state.enemy_list:
             e.move(state)
-
-    def count_down_treasures(self):
-        for t in copy.copy(self.state.treasure_list):
-            t.time -= 1
-            if t.time == 0:
-                self.state.treasure_list.remove(t)
 
 
 if __name__ == '__main__':
@@ -218,4 +210,6 @@ if __name__ == '__main__':
                                 history_size=HISTORY_SIZE, out_size=64)
         model.activate_functions["l1"] = F.relu
         model.activate_functions["l2"] = F.relu
-        agent_play(ThisGame, agent_model=model)
+        player = AsciiGamePlayerAgent(model)
+        player.ALPHA = 0.01
+        agent_play(ThisGame, player)
