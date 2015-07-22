@@ -48,8 +48,8 @@ class AsciiGamePlayerAgent(object):
     optimizer = None
     history_data = None
 
+    last_state = None
     last_action = None
-    last_q_list = None
     training = True
     use_greedy = True
 
@@ -72,16 +72,16 @@ class AsciiGamePlayerAgent(object):
 
     def ready(self):
         self.last_action = None
-        self.last_q_list = None
         self.loss_history.ready()
         self.history_data = np.zeros([self.agent_model.history_size, self.agent_model.height, self.agent_model.width],
                                      dtype=np.float32)
 
     def action(self, state, last_reward):
         if self.last_action is not None and self.training:
-            self.update_q_table(self.last_action, state, last_reward)
+            self.update_q_table(self.last_state, self.last_action, state, last_reward)
         next_action = self.select_action(state)
         self.last_action = next_action
+        self.last_state = state.deepcopy()
         return self.actions[next_action]
 
     def convert_state_to_input(self, state):
@@ -96,19 +96,19 @@ class AsciiGamePlayerAgent(object):
         return self.agent_model.forward(x)
 
     def select_action(self, state):
-        self.last_q_list = self.forward(state)
+        q_list = self.forward(state)
         if self.use_greedy and random() < self.E_GREEDY:
             return choice(self.effective_action_index_list)
         else:
-            return np.argmax(self.last_q_list.data)
+            return np.argmax(q_list.data)
 
-    def update_q_table(self, last_action, cur_state, last_reward):
+    def update_q_table(self, last_state, last_action, cur_state, last_reward):
         for loop_num in range(100):
-            loss_value = self.do_update_q_table(last_action, cur_state, last_reward)
+            loss_value = self.do_update_q_table(last_state, last_action, cur_state, last_reward)
             loss_z = self.loss_history.add_loss(loss_value)
             if is_debug():
-                print "Q max=%s\tloss=%s\tZ=%s\tmax_loss=%s\tLOOP=%s" % \
-                      (np.max(self.last_q_list.data), round(loss_value, 6), round(loss_z, 2),
+                print "loss=%s\tZ=%s\tmax_loss=%s\tLOOP=%s" % \
+                      (round(loss_value, 6), round(loss_z, 2),
                        self.loss_history.max_loss_in_a_game, loop_num)
             if loss_z < 4 or not self.loss_history.history_ready:
                 break
@@ -116,14 +116,15 @@ class AsciiGamePlayerAgent(object):
                 self.loss_history.reset()
                 raise QuitGameException("loss_value become Nan!")
 
-    def do_update_q_table(self, last_action, cur_state, last_reward):
+    def do_update_q_table(self, last_state, last_action, cur_state, last_reward):
         target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state).data)
+
         self.optimizer.zero_grads()
-        # 結構無理やりLossを計算・・・ この辺の実装は自信がない
-        tt = np.copy(self.last_q_list.data)
+        last_q_list = self.forward(last_state)
+        tt = np.copy(last_q_list.data)
         tt[0][last_action] = target_val
         target = Variable(tt)
-        loss = 0.5 * (target - self.last_q_list) ** 2
+        loss = 0.5 * (target - last_q_list) ** 2
         loss_value = loss.data[0][last_action]
         loss.grad = np.array([[self.ALPHA]], dtype=np.float32)
         loss.backward()

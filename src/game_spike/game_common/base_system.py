@@ -4,7 +4,7 @@
 __author__ = 'k_morishita'
 
 import numpy as np
-
+import copy
 
 class Game(object):
     observers = []
@@ -152,3 +152,10 @@ class AsciiGame(Game):
             "B": self.BUTTON_B,
         }
         return info
+
+class StateBase(object):
+    screen = None
+
+    def deepcopy(self):
+        new = copy.deepcopy(self)
+        return new

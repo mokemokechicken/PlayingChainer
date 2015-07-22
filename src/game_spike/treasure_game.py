@@ -3,7 +3,6 @@
 
 __author__ = 'k_morishita'
 
-
 import os
 import copy
 from random import random, randint
@@ -12,7 +11,7 @@ import itertools
 from chainer import FunctionSet
 import chainer.functions as F
 
-from game_common.base_system import AsciiGame, Screen
+from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
 from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import EmbedAgentModel
@@ -70,9 +69,7 @@ class EnemyY(Enemy):
         else:
             self.pos.x += sign(state.player_pos.x - self.pos.x)
 
-class State(object):
-    screen = None
-
+class State(StateBase):
     def __init__(self):
         self.player_pos = Pos(20, 12)
         self.enemy_list = [EnemyX(Pos(3, 3), 3), EnemyY(Pos(37, 21), 2)]

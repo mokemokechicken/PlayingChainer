@@ -10,15 +10,14 @@ import itertools
 from chainer import FunctionSet
 import chainer.functions as F
 
-from game_common.base_system import AsciiGame, Screen
+from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
 from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import AgentModel
 from game_common.agent_model import EmbedAgentModel
 
 
-class State(object):
-    screen = None
+class State(StateBase):
     px = 5
     py = 20
     power = 3
@@ -116,7 +115,7 @@ if __name__ == '__main__':
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
         debug_game(JumpGame)
-    elif os.environ.get("IN_TYPE", None) == 'id':
+    elif os.environ.get("IN_TYPE", None) != 'ver1':
         print "EmbedID Mode"
         HISTORY_SIZE = 4
         PATTERN_SIZE = 100
@@ -129,8 +128,6 @@ if __name__ == '__main__':
             l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
             l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
             l3=F.Linear(800, 64),
-            # l3=F.Linear(800, 400),
-            # l4=F.Linear(400, 64),
         )
         model = EmbedAgentModel(model=chainer_model, model_name='JumpGameEmbedModel',
                                 embed_out_size=EMBED_OUT_SIZE,
