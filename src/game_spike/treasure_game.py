@@ -5,7 +5,8 @@ __author__ = 'k_morishita'
 
 import os
 import copy
-from random import random, randint
+
+import random
 import itertools
 
 from chainer import FunctionSet
@@ -84,6 +85,7 @@ class TreasureGame(AsciiGame):
 
     NUM_TREASURES = 100
     MAX_TURN = 800
+    stage = 0
 
     # must be defined
     def prepare_game(self):
@@ -136,6 +138,7 @@ class TreasureGame(AsciiGame):
 
     # private methods
     def init_course(self):
+        self.stage = 0
         self.state.screen.fill(self.SPACE)
         self.pop_treasures()
 
@@ -149,12 +152,14 @@ class TreasureGame(AsciiGame):
             screen[e.pos.y, e.pos.x] = e.CHAR
 
     def pop_treasures(self):
+        self.stage += 1
+        random.seed(self.stage * 1000)
         for _ in range(self.NUM_TREASURES):
             self.pop_treasure()
 
     def pop_treasure(self):
         while True:
-            pos = Pos(randint(0, self.WIDTH-1), randint(0, self.HEIGHT-1))
+            pos = Pos(random.randint(0, self.WIDTH-1), random.randint(0, self.HEIGHT-1))
             if self.state.screen[pos.y, pos.x] == self.SPACE:
                 t = Treasure(pos)
                 self.state.treasure_list.append(t)
@@ -176,41 +181,57 @@ class TreasureGame(AsciiGame):
             e.move(state)
 
 
-if __name__ == '__main__':
-    ThisGame = TreasureGame
+def ptn1(ThisGame, model_name):
+    HISTORY_SIZE = 4
+    PATTERN_SIZE1 = 20
+    EMBED_OUT_SIZE = 4
+    KSIZE1 = (3, 3*EMBED_OUT_SIZE)
+    STRIDE1 = (1, 1*EMBED_OUT_SIZE)
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 38
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 22
 
+    PATTERN_SIZE2 = 100
+    KSIZE2  = (4, 5)
+    STRIDE2 = (3, 3)
+    nw2 = calc_output_size(nw1, KSIZE2[1], STRIDE2[1])  # 11
+    nh2 = calc_output_size(nh1, KSIZE2[0], STRIDE2[0])  # 6
+    chainer_model = FunctionSet(
+        l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE1, ksize=KSIZE1, stride=STRIDE1),
+        l2=F.Convolution2D(PATTERN_SIZE1, PATTERN_SIZE2, ksize=KSIZE2, stride=STRIDE2),
+        l3=F.Linear(nw2 * nh2 * PATTERN_SIZE2, 1000),
+        l4=F.Linear(1000, 64),
+    )
+    model = EmbedAgentModel(model=chainer_model, model_name=model_name,
+                            embed_out_size=EMBED_OUT_SIZE,
+                            width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
+                            history_size=HISTORY_SIZE, out_size=64)
+
+    def relu_with_drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(F.relu(x), train=train, ratio=ratio)
+        return f
+
+    def drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(x, train=train, ratio=ratio)
+        return f
+
+    model.activate_functions["l1"] = relu_with_drop_ratio(0.2)
+    model.activate_functions["l2"] = relu_with_drop_ratio(0.4)
+    model.activate_functions["l3"] = relu_with_drop_ratio(0.5)
+    model.activate_functions["l4"] = drop_ratio(0.7)
+    player = AsciiGamePlayerAgent(model)
+    player.ALPHA = 0.01
+    agent_play(ThisGame, player)
+
+
+if __name__ == '__main__':
     def calc_output_size(screen_size, ksize, stride):
         return (screen_size - ksize) / stride + 1
 
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
-        debug_game(ThisGame)
+        debug_game(TreasureGame)
     else:
         print "EmbedID Mode"
-        HISTORY_SIZE = 4
-        PATTERN_SIZE = 20
-        EMBED_OUT_SIZE = 4
-        KSIZE = (3, 3*EMBED_OUT_SIZE)
-        STRIDE = (1, 1*EMBED_OUT_SIZE)
-        nw = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE[1], STRIDE[1])   # 9
-        nh = calc_output_size(ThisGame.HEIGHT, KSIZE[0], STRIDE[0])  # 5
-        chainer_model = FunctionSet(
-            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
-            l2=F.Linear(nw * nh * PATTERN_SIZE, 1000),
-            l3=F.Linear(1000, 500),
-            l4=F.Linear(500, 64),
-        )
-        model = EmbedAgentModel(model=chainer_model, model_name='TreasureGameEmbedModel',
-                                embed_out_size=EMBED_OUT_SIZE,
-                                width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
-                                history_size=HISTORY_SIZE, out_size=64)
-
-
-        def activate_func(x, train=True):
-            return F.dropout(F.relu(x), train=train)
-
-        model.activate_functions["l1"] = activate_func
-        model.activate_functions["l2"] = activate_func
-        player = AsciiGamePlayerAgent(model)
-        player.ALPHA = 0.01
-        agent_play(ThisGame, player)
+        ptn1(TreasureGame, 'TreasureGameEmbedModel')
