@@ -188,25 +188,29 @@ if __name__ == '__main__':
     else:
         print "EmbedID Mode"
         HISTORY_SIZE = 4
-        PATTERN_SIZE = 100
+        PATTERN_SIZE = 20
         EMBED_OUT_SIZE = 4
-        KSIZE = (8, 8*EMBED_OUT_SIZE)
-        STRIDE = (4, 4*EMBED_OUT_SIZE)
+        KSIZE = (3, 3*EMBED_OUT_SIZE)
+        STRIDE = (1, 1*EMBED_OUT_SIZE)
         nw = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE[1], STRIDE[1])   # 9
         nh = calc_output_size(ThisGame.HEIGHT, KSIZE[0], STRIDE[0])  # 5
         chainer_model = FunctionSet(
             l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
-            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
-            l3=F.Linear(800, 64),
-            # l3=F.Linear(800, 400),
-            # l4=F.Linear(400, 64),
+            l2=F.Linear(nw * nh * PATTERN_SIZE, 1000),
+            l3=F.Linear(1000, 500),
+            l4=F.Linear(500, 64),
         )
         model = EmbedAgentModel(model=chainer_model, model_name='TreasureGameEmbedModel',
                                 embed_out_size=EMBED_OUT_SIZE,
                                 width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
                                 history_size=HISTORY_SIZE, out_size=64)
-        model.activate_functions["l1"] = F.relu
-        model.activate_functions["l2"] = F.relu
+
+
+        def activate_func(x, train=True):
+            return F.dropout(F.relu(x), train=train)
+
+        model.activate_functions["l1"] = activate_func
+        model.activate_functions["l2"] = activate_func
         player = AsciiGamePlayerAgent(model)
         player.ALPHA = 0.01
         agent_play(ThisGame, player)

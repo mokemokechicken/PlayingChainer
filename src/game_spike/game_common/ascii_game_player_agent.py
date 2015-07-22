@@ -91,12 +91,12 @@ class AsciiGamePlayerAgent(object):
         return Variable(self.history_data.reshape((1, self.agent_model.history_size,
                                                    self.agent_model.height, self.agent_model.width)))
 
-    def forward(self, state):
+    def forward(self, state, train=True):
         x = self.convert_state_to_input(state)
-        return self.agent_model.forward(x)
+        return self.agent_model.forward(x, train=train)
 
     def select_action(self, state):
-        q_list = self.forward(state)
+        q_list = self.forward(state, train=False)
         if self.use_greedy and random() < self.E_GREEDY:
             return choice(self.effective_action_index_list)
         else:
@@ -117,7 +117,7 @@ class AsciiGamePlayerAgent(object):
                 raise QuitGameException("loss_value become Nan!")
 
     def do_update_q_table(self, last_state, last_action, cur_state, last_reward):
-        target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state).data)
+        target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state, train=False).data)
 
         self.optimizer.zero_grads()
         last_q_list = self.forward(last_state)
