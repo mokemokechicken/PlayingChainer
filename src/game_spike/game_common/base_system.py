@@ -4,7 +4,7 @@
 __author__ = 'k_morishita'
 
 import numpy as np
-
+import copy
 
 class Game(object):
     observers = []
@@ -106,7 +106,7 @@ class Screen(object):
         self.init_screen()
 
     def init_screen(self):
-        self.data = np.zeros([self.height, self.width], dtype=np.int32)
+        self.data = np.zeros([self.height, self.width], dtype=np.int8)
 
     def fill(self, ch):
         self.data.fill(ch)
@@ -129,8 +129,8 @@ class Screen(object):
 
 
 class AsciiGame(Game):
-    WIDTH = 40
-    HEIGHT = 24
+    WIDTH = 15
+    HEIGHT = 10
     KEY_UP = 1 << 0    # 1
     KEY_DOWN = 1 << 1  # 2
     KEY_RIGHT = 1 << 2
@@ -152,3 +152,10 @@ class AsciiGame(Game):
             "B": self.BUTTON_B,
         }
         return info
+
+class StateBase(object):
+    screen = None
+
+    def deepcopy(self):
+        new = copy.deepcopy(self)
+        return new

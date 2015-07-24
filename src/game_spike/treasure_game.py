@@ -3,19 +3,20 @@
 
 __author__ = 'k_morishita'
 
-
 import os
 import copy
-from random import random, randint
+
+import random
 import itertools
 
 from chainer import FunctionSet
 import chainer.functions as F
 
-from game_common.base_system import AsciiGame, Screen
+from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
-from game_common.ascii_game_player_agent import agent_play
+from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import EmbedAgentModel
+
 
 class Pos(object):
     def __init__(self, x=0, y=0):
@@ -26,9 +27,8 @@ class Pos(object):
         return isinstance(other, Pos) and self.x == other.x and self.y == other.y
 
 class Treasure(object):
-    def __init__(self, pos, time):
+    def __init__(self, pos):
         self.pos = pos
-        self.time = time
 
 class Enemy(object):
     def __init__(self, pos, counter_max):
@@ -70,12 +70,10 @@ class EnemyY(Enemy):
         else:
             self.pos.x += sign(state.player_pos.x - self.pos.x)
 
-class State(object):
-    screen = None
-
+class State(StateBase):
     def __init__(self):
-        self.player_pos = Pos(20, 12)
-        self.enemy_list = [EnemyX(Pos(3, 3), 3), EnemyY(Pos(37, 21), 2)]
+        self.player_pos = Pos(7, 4)
+        self.enemy_list = [EnemyX(Pos(1, 1), 3), EnemyY(Pos(13, 9), 2)]
         self.treasure_list = []
         self.treasure_pop_timer = 0
 
@@ -85,9 +83,9 @@ class TreasureGame(AsciiGame):
     PLAYER = ord("A")
     TREASURE = ord("$")
 
-    LIFE_OF_TREASURE = 40
-    TREASURE_POP_SPAN = 8
+    NUM_TREASURES = 20
     MAX_TURN = 800
+    stage = 0
 
     # must be defined
     def prepare_game(self):
@@ -100,12 +98,6 @@ class TreasureGame(AsciiGame):
     def get_next_state_and_reward(self, state, action):
         self.move_player(state, action)
         self.move_enemies(state)
-        self.count_down_treasures()
-
-        state.treasure_pop_timer += 1
-        if state.treasure_pop_timer == self.TREASURE_POP_SPAN:
-            state.treasure_pop_timer = 0
-            self.pop_treasure()
 
         # decide reward
         reward = 0
@@ -120,6 +112,8 @@ class TreasureGame(AsciiGame):
             if t.pos == pos:
                 reward += 0.1
                 state.treasure_list.remove(t)
+                if len(state.treasure_list) == 0:
+                    self.pop_treasures()
 
         # game over?
         for e in self.state.enemy_list:
@@ -144,9 +138,9 @@ class TreasureGame(AsciiGame):
 
     # private methods
     def init_course(self):
+        self.stage = 0
         self.state.screen.fill(self.SPACE)
-        for _ in range(5):
-            self.pop_treasure()
+        self.pop_treasures()
 
     def draw(self):
         screen = self.state.screen
@@ -157,11 +151,17 @@ class TreasureGame(AsciiGame):
         for e in self.state.enemy_list:
             screen[e.pos.y, e.pos.x] = e.CHAR
 
+    def pop_treasures(self):
+        self.stage += 1
+        random.seed(self.stage * 1000)
+        for _ in range(self.NUM_TREASURES):
+            self.pop_treasure()
+
     def pop_treasure(self):
         while True:
-            pos = Pos(randint(0, self.WIDTH-1), randint(0, self.HEIGHT-1))
+            pos = Pos(random.randint(0, self.WIDTH-1), random.randint(0, self.HEIGHT-1))
             if self.state.screen[pos.y, pos.x] == self.SPACE:
-                t = Treasure(pos, self.LIFE_OF_TREASURE)
+                t = Treasure(pos)
                 self.state.treasure_list.append(t)
                 break
 
@@ -180,42 +180,58 @@ class TreasureGame(AsciiGame):
         for e in state.enemy_list:
             e.move(state)
 
-    def count_down_treasures(self):
-        for t in copy.copy(self.state.treasure_list):
-            t.time -= 1
-            if t.time == 0:
-                self.state.treasure_list.remove(t)
+
+def ptn1(ThisGame, model_name):
+    HISTORY_SIZE = 3
+    PATTERN_SIZE1 = 50
+    EMBED_OUT_SIZE = 3
+    KSIZE1 = (3, 3*EMBED_OUT_SIZE)
+    STRIDE1 = (1, 1*EMBED_OUT_SIZE)
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 13
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 8
+
+    PATTERN_SIZE2 = 100
+    KSIZE2  = (3, 3)
+    STRIDE2 = (1, 1)
+    nw2 = calc_output_size(nw1, KSIZE2[1], STRIDE2[1])  # 11
+    nh2 = calc_output_size(nh1, KSIZE2[0], STRIDE2[0])  # 6
+    chainer_model = FunctionSet(
+        l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE1, ksize=KSIZE1, stride=STRIDE1),
+        l2=F.Convolution2D(PATTERN_SIZE1, PATTERN_SIZE2, ksize=KSIZE2, stride=STRIDE2),
+        l3=F.Linear(nw2 * nh2 * PATTERN_SIZE2, 1000),
+        l4=F.Linear(1000, 64),
+    )
+    model = EmbedAgentModel(model=chainer_model, model_name=model_name,
+                            embed_out_size=EMBED_OUT_SIZE,
+                            width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
+                            history_size=HISTORY_SIZE, out_size=64)
+
+    def relu_with_drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(F.relu(x), train=train, ratio=ratio)
+        return f
+
+    def drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(x, train=train, ratio=ratio)
+        return f
+
+    model.activate_functions["l1"] = relu_with_drop_ratio(0.2)
+    model.activate_functions["l2"] = relu_with_drop_ratio(0.4)
+    model.activate_functions["l3"] = relu_with_drop_ratio(0.5)
+    model.activate_functions["l4"] = drop_ratio(0.7)
+    player = AsciiGamePlayerAgent(model)
+    player.ALPHA = 0.01
+    agent_play(ThisGame, player)
 
 
 if __name__ == '__main__':
-    ThisGame = TreasureGame
-
     def calc_output_size(screen_size, ksize, stride):
         return (screen_size - ksize) / stride + 1
 
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
-        debug_game(ThisGame)
+        debug_game(TreasureGame)
     else:
         print "EmbedID Mode"
-        HISTORY_SIZE = 4
-        PATTERN_SIZE = 100
-        EMBED_OUT_SIZE = 4
-        KSIZE = (8, 8*EMBED_OUT_SIZE)
-        STRIDE = (4, 4*EMBED_OUT_SIZE)
-        nw = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE[1], STRIDE[1])   # 9
-        nh = calc_output_size(ThisGame.HEIGHT, KSIZE[0], STRIDE[0])  # 5
-        chainer_model = FunctionSet(
-            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
-            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
-            l3=F.Linear(800, 64),
-            # l3=F.Linear(800, 400),
-            # l4=F.Linear(400, 64),
-        )
-        model = EmbedAgentModel(model=chainer_model, model_name='TreasureGameEmbedModel',
-                                embed_out_size=EMBED_OUT_SIZE,
-                                width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
-                                history_size=HISTORY_SIZE, out_size=64)
-        model.activate_functions["l1"] = F.relu
-        model.activate_functions["l2"] = F.relu
-        agent_play(ThisGame, agent_model=model)
+        ptn1(TreasureGame, 'TreasureGameEmbedModel')

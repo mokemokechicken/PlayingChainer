@@ -4,23 +4,22 @@
 __author__ = 'k_morishita'
 
 import os
-from random import random
+import random
 import itertools
 
 from chainer import FunctionSet
 import chainer.functions as F
 
-from game_common.base_system import AsciiGame, Screen
+from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
-from game_common.ascii_game_player_agent import agent_play
+from game_common.ascii_game_player_agent import agent_play, AsciiGamePlayerAgent
 from game_common.agent_model import AgentModel
 from game_common.agent_model import EmbedAgentModel
 
 
-class State(object):
-    screen = None
+class State(StateBase):
     px = 5
-    py = 20
+    py = 7
     power = 3
     jumping_down = False
 
@@ -29,7 +28,7 @@ class JumpGame(AsciiGame):
     BLOCK = ord("=")
     SPACE = ord(" ")
     space_rate = 0.2
-    PY_MAX = 20
+    PY_MAX = 8
     POWER_MAX = 3
 
     # must be defined
@@ -55,8 +54,8 @@ class JumpGame(AsciiGame):
         if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
             reward -= 0.1
 
-        if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE: # 穴の上では報酬がある
-            reward += 0.1
+        # if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:  # 穴の上では報酬がある
+        #     reward += 0.1
 
         # game over?
         if state.py == self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:
@@ -80,7 +79,10 @@ class JumpGame(AsciiGame):
 
     def gen_block_or_space(self, space_rate=None):
         space_rate = space_rate or self.space_rate
-        return self.SPACE if random() < space_rate else self.BLOCK
+        random.seed(self.turn+1)
+        ret = self.SPACE if random.random() < space_rate else self.BLOCK
+        random.seed(0)
+        return ret
 
     def draw_player(self, erase=False):
         self.state.screen[self.state.py, self.state.px] = self.SPACE if erase else self.PLAYER
@@ -109,6 +111,51 @@ class JumpGame(AsciiGame):
                     state.power = self.POWER_MAX
                 state.jumping_down = False
 
+
+def ptn1(ThisGame, model_name):
+    HISTORY_SIZE = 3
+    PATTERN_SIZE1 = 50
+    EMBED_OUT_SIZE = 3
+    KSIZE1 = (3, 3*EMBED_OUT_SIZE)
+    STRIDE1 = (1, 1*EMBED_OUT_SIZE)
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 13
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 8
+
+    PATTERN_SIZE2 = 100
+    KSIZE2  = (3, 3)
+    STRIDE2 = (1, 1)
+    nw2 = calc_output_size(nw1, KSIZE2[1], STRIDE2[1])  # 11
+    nh2 = calc_output_size(nh1, KSIZE2[0], STRIDE2[0])  # 6
+    chainer_model = FunctionSet(
+        l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE1, ksize=KSIZE1, stride=STRIDE1),
+        l2=F.Convolution2D(PATTERN_SIZE1, PATTERN_SIZE2, ksize=KSIZE2, stride=STRIDE2),
+        l3=F.Linear(nw2 * nh2 * PATTERN_SIZE2, 1000),
+        l4=F.Linear(1000, 64),
+    )
+    model = EmbedAgentModel(model=chainer_model, model_name=model_name,
+                            embed_out_size=EMBED_OUT_SIZE,
+                            width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
+                            history_size=HISTORY_SIZE, out_size=64)
+
+    def relu_with_drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(F.relu(x), train=train, ratio=ratio)
+        return f
+
+    def drop_ratio(ratio):
+        def f(x, train=True):
+            return F.dropout(x, train=train, ratio=ratio)
+        return f
+
+    model.activate_functions["l1"] = relu_with_drop_ratio(0.2)
+    model.activate_functions["l2"] = relu_with_drop_ratio(0.4)
+    model.activate_functions["l3"] = relu_with_drop_ratio(0.5)
+    model.activate_functions["l4"] = drop_ratio(0.7)
+    player = AsciiGamePlayerAgent(model)
+    player.ALPHA = 0.01
+    agent_play(ThisGame, player)
+
+
 if __name__ == '__main__':
     def calc_output_size(screen_size, ksize, stride):
         return (screen_size - ksize) / stride + 1
@@ -116,43 +163,7 @@ if __name__ == '__main__':
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
         debug_game(JumpGame)
-    elif os.environ.get("IN_TYPE", None) == 'id':
-        print "EmbedID Mode"
-        HISTORY_SIZE = 4
-        PATTERN_SIZE = 100
-        EMBED_OUT_SIZE = 4
-        KSIZE = (8, 8*EMBED_OUT_SIZE)
-        STRIDE = (4, 4*EMBED_OUT_SIZE)
-        nw = calc_output_size(JumpGame.WIDTH*EMBED_OUT_SIZE, KSIZE[1], STRIDE[1])   # 9
-        nh = calc_output_size(JumpGame.HEIGHT, KSIZE[0], STRIDE[0])  # 5
-        chainer_model = FunctionSet(
-            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=KSIZE, stride=STRIDE),
-            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
-            l3=F.Linear(800, 64),
-            # l3=F.Linear(800, 400),
-            # l4=F.Linear(400, 64),
-        )
-        model = EmbedAgentModel(model=chainer_model, model_name='JumpGameEmbedModel',
-                                embed_out_size=EMBED_OUT_SIZE,
-                                width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
-                                history_size=HISTORY_SIZE, out_size=64)
-        model.activate_functions["l1"] = F.relu
-        model.activate_functions["l2"] = F.relu
-        # model.activate_functions["l3"] = F.relu
-        agent_play(JumpGame, agent_model=model)
     else:
-        print "Ver1 Mode"
-        HISTORY_SIZE = 4
-        PATTERN_SIZE = 100
-        nw = calc_output_size(JumpGame.WIDTH, 8, 4)   # 9
-        nh = calc_output_size(JumpGame.HEIGHT, 8, 4)  # 5
-        chainer_model = FunctionSet(
-            l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE, ksize=8, stride=4),
-            l2=F.Linear(nw * nh * PATTERN_SIZE, 800),
-            l3=F.Linear(800, 400),
-            l4=F.Linear(400, 64),
-        )
-        model = AgentModel(model=chainer_model, model_name='JumpGame',
-                           width=JumpGame.WIDTH, height=JumpGame.HEIGHT,
-                           history_size=HISTORY_SIZE, out_size=64)
-        agent_play(JumpGame, agent_model=model)
+        print "EmbedID Mode"
+        ptn1(JumpGame, 'JumpGame')
+

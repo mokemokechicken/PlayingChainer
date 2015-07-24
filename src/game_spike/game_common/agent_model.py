@@ -22,7 +22,7 @@ class AgentModel(object):
         self.out_size = out_size
         self.meta['name'] = self.model_name
 
-    def forward(self, in_variable):
+    def forward(self, in_variable, train=True):
         x = in_variable
         y = None
         for i in range(1, 1000):  # 1000 は適当な数
@@ -31,7 +31,7 @@ class AgentModel(object):
                 li = getattr(self.function_set, name)
                 if self.activate_functions.get(name):
                     func = self.activate_functions.get(name)
-                    x = func(li(x))
+                    x = func(li(x), train=train)
                 else:
                     x = li(x)
             else:
