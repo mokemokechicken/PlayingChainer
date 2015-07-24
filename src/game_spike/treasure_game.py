@@ -72,8 +72,8 @@ class EnemyY(Enemy):
 
 class State(StateBase):
     def __init__(self):
-        self.player_pos = Pos(20, 12)
-        self.enemy_list = [EnemyX(Pos(3, 3), 3), EnemyY(Pos(37, 21), 2)]
+        self.player_pos = Pos(7, 4)
+        self.enemy_list = [EnemyX(Pos(1, 1), 3), EnemyY(Pos(13, 9), 2)]
         self.treasure_list = []
         self.treasure_pop_timer = 0
 
@@ -83,7 +83,7 @@ class TreasureGame(AsciiGame):
     PLAYER = ord("A")
     TREASURE = ord("$")
 
-    NUM_TREASURES = 100
+    NUM_TREASURES = 20
     MAX_TURN = 800
     stage = 0
 
@@ -182,17 +182,17 @@ class TreasureGame(AsciiGame):
 
 
 def ptn1(ThisGame, model_name):
-    HISTORY_SIZE = 4
-    PATTERN_SIZE1 = 20
-    EMBED_OUT_SIZE = 4
+    HISTORY_SIZE = 3
+    PATTERN_SIZE1 = 50
+    EMBED_OUT_SIZE = 3
     KSIZE1 = (3, 3*EMBED_OUT_SIZE)
     STRIDE1 = (1, 1*EMBED_OUT_SIZE)
-    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 38
-    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 22
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 13
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 8
 
     PATTERN_SIZE2 = 100
-    KSIZE2  = (4, 5)
-    STRIDE2 = (3, 3)
+    KSIZE2  = (3, 3)
+    STRIDE2 = (1, 1)
     nw2 = calc_output_size(nw1, KSIZE2[1], STRIDE2[1])  # 11
     nh2 = calc_output_size(nh1, KSIZE2[0], STRIDE2[0])  # 6
     chainer_model = FunctionSet(

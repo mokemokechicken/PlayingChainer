@@ -56,7 +56,7 @@ class ReplayClient(object):
         border_win.refresh()
         self.main_window = curses.newwin(height, width, self.W_TOP + 1, self.W_LEFT + 1)
         self.main_window.refresh()
-        self.info_window = curses.newwin(height, width, self.W_TOP + 1, self.W_LEFT + width + 2)
+        self.info_window = curses.newwin(20, 40, self.W_TOP + 1, self.W_LEFT + width + 2)
 
     def play_data(self, replay_data):
         width, height = replay_data["size"]

@@ -129,8 +129,8 @@ class Screen(object):
 
 
 class AsciiGame(Game):
-    WIDTH = 40
-    HEIGHT = 24
+    WIDTH = 15
+    HEIGHT = 10
     KEY_UP = 1 << 0    # 1
     KEY_DOWN = 1 << 1  # 2
     KEY_RIGHT = 1 << 2

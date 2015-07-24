@@ -19,7 +19,7 @@ from game_common.agent_model import EmbedAgentModel
 
 class State(StateBase):
     px = 5
-    py = 20
+    py = 7
     power = 3
     jumping_down = False
 
@@ -28,7 +28,7 @@ class JumpGame(AsciiGame):
     BLOCK = ord("=")
     SPACE = ord(" ")
     space_rate = 0.2
-    PY_MAX = 20
+    PY_MAX = 8
     POWER_MAX = 3
 
     # must be defined
@@ -113,17 +113,17 @@ class JumpGame(AsciiGame):
 
 
 def ptn1(ThisGame, model_name):
-    HISTORY_SIZE = 4
-    PATTERN_SIZE1 = 20
-    EMBED_OUT_SIZE = 4
+    HISTORY_SIZE = 3
+    PATTERN_SIZE1 = 50
+    EMBED_OUT_SIZE = 3
     KSIZE1 = (3, 3*EMBED_OUT_SIZE)
     STRIDE1 = (1, 1*EMBED_OUT_SIZE)
-    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 38
-    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 22
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 13
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 8
 
     PATTERN_SIZE2 = 100
-    KSIZE2  = (4, 5)
-    STRIDE2 = (3, 3)
+    KSIZE2  = (3, 3)
+    STRIDE2 = (1, 1)
     nw2 = calc_output_size(nw1, KSIZE2[1], STRIDE2[1])  # 11
     nh2 = calc_output_size(nh1, KSIZE2[0], STRIDE2[0])  # 6
     chainer_model = FunctionSet(
