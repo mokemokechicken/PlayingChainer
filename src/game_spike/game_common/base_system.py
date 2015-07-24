@@ -106,7 +106,7 @@ class Screen(object):
         self.init_screen()
 
     def init_screen(self):
-        self.data = np.zeros([self.height, self.width], dtype=np.int32)
+        self.data = np.zeros([self.height, self.width], dtype=np.int8)
 
     def fill(self, ch):
         self.data.fill(ch)
