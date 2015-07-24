@@ -54,8 +54,8 @@ class JumpGame(AsciiGame):
         if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
             reward -= 0.1
 
-        if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE: # 穴の上では報酬がある
-            reward += 0.1
+        # if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:  # 穴の上では報酬がある
+        #     reward += 0.1
 
         # game over?
         if state.py == self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:

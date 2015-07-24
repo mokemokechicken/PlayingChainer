@@ -67,7 +67,8 @@ class AsciiGamePlayerAgent(object):
 
     def load_model_parameters(self):
         self.repo.load_model_params(self.agent_model)
-        self.optimizer = optimizers.SGD()
+        # self.optimizer = optimizers.SGD()
+        self.optimizer = optimizers.RMSpropGraves(lr=0.00025, alpha=0.95, momentum=0.95, eps=0.0001)
         self.optimizer.setup(self.agent_model.function_set.collect_parameters())
 
     def ready(self):
@@ -126,7 +127,7 @@ class AsciiGamePlayerAgent(object):
         target = Variable(tt)
         loss = 0.5 * (target - last_q_list) ** 2
         loss_value = loss.data[0][last_action]
-        loss.grad = np.array([[self.ALPHA]], dtype=np.float32)
+        loss.grad = np.array([[1]], dtype=np.float32)
         loss.backward()
         self.optimizer.update()
         self.agent_model.on_learn(times=len(tt))
