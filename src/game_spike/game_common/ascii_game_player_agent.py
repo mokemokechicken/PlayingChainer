@@ -46,7 +46,10 @@ class AsciiGamePlayerAgent(object):
     E_GREEDY = 0.3
 
     optimizer = None
-    history_data = None
+
+    # last_state: history_data[:history_size]
+    # cur_state : history_data[1:]
+    state_history_array = None
 
     last_state = None
     last_action = None
@@ -74,38 +77,43 @@ class AsciiGamePlayerAgent(object):
     def ready(self):
         self.last_action = None
         self.loss_history.ready()
-        self.history_data = np.zeros([self.agent_model.history_size, self.agent_model.height, self.agent_model.width],
+        self.state_history_array = np.zeros([self.agent_model.history_size+1, self.agent_model.height, self.agent_model.width],
                                      dtype=np.float32)
 
     def action(self, state, last_reward):
+        self.update_history(state)
         if self.last_action is not None and self.training:
-            self.update_q_table(self.last_state, self.last_action, state, last_reward)
-        next_action = self.select_action(state)
+            self.update_q_table(self.state_history_array, self.last_action, last_reward)
+        next_action = self.select_action(self.state_history_array)
         self.last_action = next_action
-        self.last_state = state.deepcopy()
         return self.actions[next_action]
 
-    def convert_state_to_input(self, state):
+    def update_history(self, state):
         in_data = self.agent_model.convert_state_to_input(state)
-        self.history_data = np.roll(self.history_data, -1, axis=0)
-        self.history_data[self.agent_model.history_size-1] = in_data
-        return Variable(self.history_data.reshape((1, self.agent_model.history_size,
-                                                   self.agent_model.height, self.agent_model.width)))
+        self.state_history_array = np.roll(self.state_history_array, 1, axis=0)  # shift history array: 0->1, 1->2, ...
+        self.state_history_array[0] = in_data                             # set new history to 0
 
-    def forward(self, state, train=True):
-        x = self.convert_state_to_input(state)
+    def forward(self, part_of_history_array, train=True):
+        x = Variable(part_of_history_array.reshape((1, self.agent_model.history_size,
+                                                   self.agent_model.height, self.agent_model.width)))
         return self.agent_model.forward(x, train=train)
 
-    def select_action(self, state):
-        q_list = self.forward(state, train=False)
+    def forward_last_state(self, history_array, train=True):
+        return self.forward(history_array[1:], train=train)
+
+    def forward_current_state(self, history_array, train=True):
+        return self.forward(history_array[:self.agent_model.history_size], train=train)
+
+    def select_action(self, history_array):
+        q_list = self.forward_current_state(history_array, train=False)
         if self.use_greedy and random() < self.E_GREEDY:
             return choice(self.effective_action_index_list)
         else:
             return np.argmax(q_list.data)
 
-    def update_q_table(self, last_state, last_action, cur_state, last_reward):
+    def update_q_table(self, history_array, last_action, last_reward):
         for loop_num in range(100):
-            loss_value = self.do_update_q_table(last_state, last_action, cur_state, last_reward)
+            loss_value = self.do_update_q_table(history_array, last_action, last_reward)
             loss_z = self.loss_history.add_loss(loss_value)
             if is_debug():
                 print "loss=%s\tZ=%s\tmax_loss=%s\tLOOP=%s" % \
@@ -117,11 +125,11 @@ class AsciiGamePlayerAgent(object):
                 self.loss_history.reset()
                 raise QuitGameException("loss_value become Nan!")
 
-    def do_update_q_table(self, last_state, last_action, cur_state, last_reward):
-        target_val = last_reward + self.GAMMA * np.max(self.forward(cur_state, train=False).data)
+    def do_update_q_table(self, history_array, last_action, last_reward):
+        target_val = last_reward + self.GAMMA * np.max(self.forward_current_state(history_array, train=False).data)
 
         self.optimizer.zero_grads()
-        last_q_list = self.forward(last_state)
+        last_q_list = self.forward_last_state(history_array, train=True)
         tt = np.copy(last_q_list.data)
         tt[0][last_action] = target_val
         target = Variable(tt)
