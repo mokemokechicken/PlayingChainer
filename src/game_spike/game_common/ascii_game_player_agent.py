@@ -5,10 +5,13 @@ import os
 from random import random, randint, choice
 import math
 import numpy as np
+
 from chainer import Variable, optimizers
+import chainer.functions as F
 
 from game_repository import GameRepository
 from replay_server import ReplayServer
+
 
 class LossHistory(object):
     pointer = 0
@@ -40,10 +43,29 @@ class LossHistory(object):
 class QuitGameException(Exception):
     pass
 
+class ExperimentManager(object):
+    def __init__(self, max_size):
+        self.max_size = max_size
+        self.data = []
+
+    def add(self, history_array, last_action, last_reward):
+        self.data.append([np.copy(history_array), last_action, last_reward])
+        if len(self.data) > self.max_size:
+            self.data.pop(0)
+
+    def get(self, index):
+        return self.data[index]
+
+    def size(self):
+        return len(self.data)
+
 class AsciiGamePlayerAgent(object):
     ALPHA = 0.1
     GAMMA = 0.99
     E_GREEDY = 0.3
+    MAX_EXPERIMENTS_SIZE = 100000
+    REPLAY_BATCH_SIZE = 100
+    REPLAY_TIMES_PER_GAME = 5
 
     optimizer = None
 
@@ -67,6 +89,7 @@ class AsciiGamePlayerAgent(object):
         self.load_model_parameters()
         self.effective_action_index_list = range(len(self.actions))
         self.loss_history = LossHistory(100)
+        self.exp_manager = ExperimentManager(self.MAX_EXPERIMENTS_SIZE)
 
     def load_model_parameters(self):
         self.repo.load_model_params(self.agent_model)
@@ -77,12 +100,14 @@ class AsciiGamePlayerAgent(object):
     def ready(self):
         self.last_action = None
         self.loss_history.ready()
-        self.state_history_array = np.zeros([self.agent_model.history_size+1, self.agent_model.height, self.agent_model.width],
-                                     dtype=np.float32)
+        self.state_history_array = np.zeros(
+            [self.agent_model.history_size+1, self.agent_model.height, self.agent_model.width],
+            dtype=np.float32)
 
     def action(self, state, last_reward):
         self.update_history(state)
         if self.last_action is not None and self.training:
+            self.exp_manager.add(self.state_history_array, self.last_action, last_reward)
             self.update_q_table(self.state_history_array, self.last_action, last_reward)
         next_action = self.select_action(self.state_history_array)
         self.last_action = next_action
@@ -90,19 +115,33 @@ class AsciiGamePlayerAgent(object):
 
     def update_history(self, state):
         in_data = self.agent_model.convert_state_to_input(state)
-        self.state_history_array = np.roll(self.state_history_array, 1, axis=0)  # shift history array: 0->1, 1->2, ...
-        self.state_history_array[0] = in_data                             # set new history to 0
+        self.state_history_array = np.roll(self.state_history_array, 1, axis=0)  # shift history: 0->1, 1->2, ...
+        self.state_history_array[0] = in_data                                    # set new history to index 0
 
-    def forward(self, part_of_history_array, train=True):
-        x = Variable(part_of_history_array.reshape((1, self.agent_model.history_size,
+    def forward(self, part_of_history_array, train=True, batch_size=1):
+        x = Variable(part_of_history_array.reshape((batch_size, self.agent_model.history_size,
                                                    self.agent_model.height, self.agent_model.width)))
         return self.agent_model.forward(x, train=train)
 
     def forward_last_state(self, history_array, train=True):
-        return self.forward(history_array[1:], train=train)
+        if history_array.ndim == 3:
+            return self.forward(history_array[1:], train=train,
+                                batch_size=1)
+        elif history_array.ndim == 4:
+            return self.forward(history_array[:, 1:], train=train,
+                                batch_size=len(history_array))
+        else:
+            raise Exception("history_array dims must be 3 or 4, but %d", history_array.ndim)
 
     def forward_current_state(self, history_array, train=True):
-        return self.forward(history_array[:self.agent_model.history_size], train=train)
+        if history_array.ndim == 3:
+            return self.forward(history_array[:self.agent_model.history_size], train=train,
+                                batch_size=1)
+        elif history_array.ndim == 4:
+            return self.forward(history_array[:, :self.agent_model.history_size], train=train,
+                                batch_size=len(history_array))
+        else:
+            raise Exception("history_array dims must be 3 or 4, but %d", history_array.ndim)
 
     def select_action(self, history_array):
         q_list = self.forward_current_state(history_array, train=False)
@@ -126,20 +165,50 @@ class AsciiGamePlayerAgent(object):
                 raise QuitGameException("loss_value become Nan!")
 
     def do_update_q_table(self, history_array, last_action, last_reward):
-        target_val = last_reward + self.GAMMA * np.max(self.forward_current_state(history_array, train=False).data)
+        target_val = self.calc_target_val(history_array, last_reward)
 
         self.optimizer.zero_grads()
         last_q_list = self.forward_last_state(history_array, train=True)
         tt = np.copy(last_q_list.data)
         tt[0][last_action] = target_val
         target = Variable(tt)
-        loss = 0.5 * (target - last_q_list) ** 2
-        loss_value = loss.data[0][last_action]
-        loss.grad = np.array([[1]], dtype=np.float32)
+        loss = F.mean_squared_error(target, last_q_list)
         loss.backward()
         self.optimizer.update()
         self.agent_model.on_learn(times=len(tt))
-        return loss_value
+        return loss.data
+
+    def calc_target_val(self, history_array, last_reward):
+        return last_reward + self.GAMMA * np.max(self.forward_current_state(history_array, train=False).data)
+
+    # とりあえず、無理やり実装してみる
+    def update_by_experimental_replay(self, num):
+        num = min(num, self.exp_manager.size())
+        replay_index_list = np.random.randint(0, self.exp_manager.size(), num)
+
+        sh = self.state_history_array.shape
+        history_arrays = np.zeros([num, sh[0], sh[1], sh[2]], dtype=np.float32)
+        target_val_array = np.zeros([num], dtype=np.float32)
+        last_action_array = np.zeros([num], dtype=np.int32)
+        for i, idx in enumerate(replay_index_list):
+            history_array, last_action, last_reward = self.exp_manager.get(idx)
+            history_arrays[i] = history_array
+            last_action_array[i] = last_action
+            target_val_array[i] = self.calc_target_val(history_array, last_reward)
+
+        self.optimizer.zero_grads()
+        last_q_list_array = self.forward_last_state(history_arrays, train=True)
+        tt = np.copy(last_q_list_array.data)
+        for i in range(num):
+            tt[i][last_action_array[i]] = target_val_array[i]
+        target = Variable(tt)
+        loss = F.mean_squared_error(target, last_q_list_array)
+        loss.backward()
+        self.optimizer.update()
+        self.agent_model.on_learn(times=len(tt))
+        if is_debug():
+            print "Experimental Replay Loss: %s" % loss.data
+        return loss.data
 
     # Game Life cycle
     def on_game_start(self, game):
@@ -148,6 +217,9 @@ class AsciiGamePlayerAgent(object):
     def on_game_over(self, game):
         # Learn last bad reward
         self.action(game.state, game.last_reward)
+        # experimental replay
+        for _ in range(self.REPLAY_TIMES_PER_GAME):
+            self.update_by_experimental_replay(self.REPLAY_BATCH_SIZE)
         if self.training:
             self.repo.save_model_params(self.agent_model)
         if is_debug():
