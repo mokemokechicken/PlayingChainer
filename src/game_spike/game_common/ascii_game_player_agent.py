@@ -65,7 +65,7 @@ class AsciiGamePlayerAgent(object):
     E_GREEDY = 0.3
     MAX_EXPERIMENTS_SIZE = 100000
     REPLAY_BATCH_SIZE = 100
-    REPLAY_TIMES_PER_GAME = 5
+    REPLAY_TIMES_PER_GAME = 3
 
     optimizer = None
 
@@ -179,7 +179,9 @@ class AsciiGamePlayerAgent(object):
         return loss.data
 
     def calc_target_val(self, history_array, last_reward):
-        return last_reward + self.GAMMA * np.max(self.forward_current_state(history_array, train=False).data)
+        axis = 1 if history_array.ndim == 4 else None
+        tvs = self.forward_current_state(history_array, train=False).data
+        return last_reward + self.GAMMA * np.max(tvs, axis=axis)
 
     # とりあえず、無理やり実装してみる
     def update_by_experimental_replay(self, num):
@@ -188,13 +190,15 @@ class AsciiGamePlayerAgent(object):
 
         sh = self.state_history_array.shape
         history_arrays = np.zeros([num, sh[0], sh[1], sh[2]], dtype=np.float32)
-        target_val_array = np.zeros([num], dtype=np.float32)
         last_action_array = np.zeros([num], dtype=np.int32)
+        last_reward_array = np.zeros([num], dtype=np.int32)
         for i, idx in enumerate(replay_index_list):
             history_array, last_action, last_reward = self.exp_manager.get(idx)
             history_arrays[i] = history_array
             last_action_array[i] = last_action
-            target_val_array[i] = self.calc_target_val(history_array, last_reward)
+            last_reward_array[i] = last_reward
+
+        target_val_array = self.calc_target_val(history_arrays, last_reward_array)
 
         self.optimizer.zero_grads()
         last_q_list_array = self.forward_last_state(history_arrays, train=True)
