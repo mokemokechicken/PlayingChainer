@@ -35,21 +35,22 @@ class ReplayClient(object):
         self.stdscr = stdscr
         self.host = host
         self.port = port
-        self.replay_mode = REPLAY_TYPE_LAST_PLAY
+        self.replay_mode = REPLAY_TYPE_CURRENT_PLAY
 
     def poll(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((self.host, self.port))
+        sock.send(self.replay_mode)
+        sock.shutdown(1)  # close write socket
         data = receive_all(sock)
+        sock.close()
         return loads(data)
 
     def replay_forever(self):
         while True:
             replay_data = self.poll()
-            if replay_data is not None:
-                self.play_data(replay_data)
-            else:
-                time.sleep(1)
+            self.control_play_data(replay_data)
+            time.sleep(1)
 
     def init_window(self, width, height):
         curses.curs_set(0)
@@ -74,6 +75,17 @@ class ReplayClient(object):
             return False
         return True
 
+    def control_play_data(self, replay_data):
+        if replay_data is None:
+            return
+
+        if isinstance(replay_data, list):
+            for r_data in replay_data:
+                if not self.play_data(r_data):
+                    return
+        else:
+            self.play_data(replay_data)
+
     def play_data(self, replay_data):
         width, height = replay_data["size"]
         meta_info = replay_data["meta"]
@@ -83,7 +95,7 @@ class ReplayClient(object):
         for scene in replay_data["scenes"]:
             t1 = time.time()
             if self.accept_change_mode():
-                break
+                return False
             game_info = scene["game"]
             game_info["screen_width"] = width
             game_info["screen_height"] = height
@@ -92,6 +104,7 @@ class ReplayClient(object):
             t2 = time.time() - t1
             if t2 < self.SEC_PER_TURN:
                 time.sleep(self.SEC_PER_TURN - t2)
+        return True
 
     def update_screen(self, game, screen, meta, extra_info_list):
         for y in range(game["screen_height"]):

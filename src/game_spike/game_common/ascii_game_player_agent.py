@@ -94,6 +94,9 @@ class AsciiGamePlayerAgent(object):
         self.loss_history = LossHistory(100)
         self.exp_manager = ExperimentManager(self.MAX_EXPERIMENTS_SIZE)
 
+    def name(self):
+        return self.agent_model.model_name
+
     def load_model_parameters(self):
         self.repo.load_model_params(self.agent_model)
         # self.optimizer = optimizers.SGD()
