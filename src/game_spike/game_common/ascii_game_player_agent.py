@@ -64,7 +64,10 @@ class AsciiGamePlayerAgent(object):
     GAMMA = 0.99
     E_GREEDY = 0.3
     MAX_EXPERIMENTS_SIZE = 100000
-    REPLAY_BATCH_SIZE = 100
+
+    MAX_ACCEPTABLE_LOSS = 0.001
+
+    REPLAY_BATCH_SIZE = 10
     REPLAY_TIMES_PER_GAME = 3
 
     optimizer = None
@@ -158,7 +161,7 @@ class AsciiGamePlayerAgent(object):
                 print "loss=%s\tZ=%s\tmax_loss=%s\tLOOP=%s" % \
                       (round(loss_value, 6), round(loss_z, 2),
                        self.loss_history.max_loss_in_a_game, loop_num)
-            if loss_z < 4 or not self.loss_history.history_ready:
+            if loss_z < 4 or loss_value < self.MAX_ACCEPTABLE_LOSS or not self.loss_history.history_ready:
                 break
             if math.isnan(loss_value):
                 self.loss_history.reset()
@@ -222,8 +225,8 @@ class AsciiGamePlayerAgent(object):
         # Learn last bad reward
         self.action(game.state, game.last_reward)
         # experimental replay
-        for _ in range(self.REPLAY_TIMES_PER_GAME):
-            self.update_by_experimental_replay(self.REPLAY_BATCH_SIZE)
+        #for _ in range(self.REPLAY_TIMES_PER_GAME):
+        #    self.update_by_experimental_replay(self.REPLAY_BATCH_SIZE)
         if self.training:
             self.repo.save_model_params(self.agent_model)
         if is_debug():

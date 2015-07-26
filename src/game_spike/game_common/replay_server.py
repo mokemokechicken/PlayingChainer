@@ -4,6 +4,7 @@ from cPickle import dumps, HIGHEST_PROTOCOL
 import socket
 import threading
 
+from replay_const import REPLAY_TYPE_CURRENT_PLAY, REPLAY_TYPE_HIGH_SCORES, REPLAY_TYPE_LAST_PLAY
 
 class ReplayServer(object):
     last_play = None

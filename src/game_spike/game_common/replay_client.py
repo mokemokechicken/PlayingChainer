@@ -11,6 +11,8 @@ import time
 
 from curse_util import ignore_error_add_str
 
+from replay_const import REPLAY_TYPE_CURRENT_PLAY, REPLAY_TYPE_HIGH_SCORES, REPLAY_TYPE_LAST_PLAY
+
 
 def receive_all(sock):
     data = ""
@@ -33,6 +35,7 @@ class ReplayClient(object):
         self.stdscr = stdscr
         self.host = host
         self.port = port
+        self.replay_mode = REPLAY_TYPE_LAST_PLAY
 
     def poll(self):
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -56,7 +59,20 @@ class ReplayClient(object):
         border_win.refresh()
         self.main_window = curses.newwin(height, width, self.W_TOP + 1, self.W_LEFT + 1)
         self.main_window.refresh()
+        self.main_window.timeout(1)
         self.info_window = curses.newwin(20, 40, self.W_TOP + 1, self.W_LEFT + width + 2)
+
+    def accept_change_mode(self):
+        ch = self.main_window.getch()
+        if ch == ord("1"):
+            self.replay_mode = REPLAY_TYPE_LAST_PLAY
+        elif ch == ord("2"):
+            self.replay_mode = REPLAY_TYPE_CURRENT_PLAY
+        elif ch == ord("3"):
+            self.replay_mode = REPLAY_TYPE_HIGH_SCORES
+        else:
+            return False
+        return True
 
     def play_data(self, replay_data):
         width, height = replay_data["size"]
@@ -66,6 +82,8 @@ class ReplayClient(object):
 
         for scene in replay_data["scenes"]:
             t1 = time.time()
+            if self.accept_change_mode():
+                break
             game_info = scene["game"]
             game_info["screen_width"] = width
             game_info["screen_height"] = height
@@ -87,6 +105,8 @@ class ReplayClient(object):
 
         self.info_window.clear()
         info_list = [
+            "1: last, 2:current, 3:high",
+            "REPLAY_MODE: %s" % self.replay_mode,
             "PlayID: %d    HighScore: %s" % (play_id, meta["high_score"]),
             "Turn: %s" % game["turn"],
             "Total Score: %s" % game["total_reward"],
