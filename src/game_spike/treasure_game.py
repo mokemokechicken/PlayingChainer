@@ -73,7 +73,7 @@ class EnemyY(Enemy):
 class State(StateBase):
     def __init__(self):
         self.player_pos = Pos(7, 4)
-        self.enemy_list = [EnemyX(Pos(1, 1), 3), EnemyY(Pos(13, 9), 2)]
+        self.enemy_list = [EnemyY(Pos(13, 9), 2)]
         self.treasure_list = []
         self.treasure_pop_timer = 0
 
@@ -94,13 +94,16 @@ class TreasureGame(AsciiGame):
         self.init_course()
         self.draw()
 
+    def add_enemy(self):
+        self.state.enemy_list.append(EnemyX(Pos(0, 0), 3))
+
     # must be defined
     def get_next_state_and_reward(self, state, action):
         self.move_player(state, action)
         self.move_enemies(state)
 
         # decide reward
-        reward = 0
+        reward = 0.01
 
         # key penalty -0.5
         if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
@@ -110,10 +113,11 @@ class TreasureGame(AsciiGame):
         pos = state.player_pos
         for t in copy.copy(state.treasure_list):
             if t.pos == pos:
-                reward += 0.1
+                reward += 0.2
                 state.treasure_list.remove(t)
                 if len(state.treasure_list) == 0:
                     self.pop_treasures()
+                    self.add_enemy()
 
         # game over?
         for e in self.state.enemy_list:

@@ -78,6 +78,7 @@ class AsciiGamePlayerAgent(object):
 
     last_state = None
     last_action = None
+    last_loss_value = None
     training = True
     use_greedy = True
 
@@ -111,6 +112,7 @@ class AsciiGamePlayerAgent(object):
             dtype=np.float32)
 
     def action(self, state, last_reward):
+        self.last_loss_value = None
         self.update_history(state)
         if self.last_action is not None and self.training:
             self.exp_manager.add(self.state_history_array, self.last_action, last_reward)
@@ -182,6 +184,7 @@ class AsciiGamePlayerAgent(object):
         loss.backward()
         self.optimizer.update()
         self.agent_model.on_learn(times=len(tt))
+        self.last_loss_value = self.last_loss_value or loss.data
         return loss.data
 
     def calc_target_val(self, history_array, last_reward):
@@ -219,6 +222,12 @@ class AsciiGamePlayerAgent(object):
         if is_debug():
             print "Experimental Replay Loss: %s" % loss.data
         return loss.data
+
+    def turn_info(self):
+        """for debug or info"""
+        return {
+            "loss_value": self.last_loss_value,
+        }
 
     # Game Life cycle
     def on_game_start(self, game):

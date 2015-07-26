@@ -50,7 +50,6 @@ class ReplayClient(object):
         while True:
             replay_data = self.poll()
             self.control_play_data(replay_data)
-            time.sleep(1)
 
     def init_window(self, width, height):
         curses.curs_set(0)
@@ -77,6 +76,7 @@ class ReplayClient(object):
 
     def control_play_data(self, replay_data):
         if replay_data is None:
+            time.sleep(1)
             return
 
         if isinstance(replay_data, list):
@@ -97,16 +97,18 @@ class ReplayClient(object):
             if self.accept_change_mode():
                 return False
             game_info = scene["game"]
+            player_info = scene.get("player", {})
             game_info["screen_width"] = width
             game_info["screen_height"] = height
             screen = scene["screen"]
-            self.update_screen(game_info, screen, meta_info, replay_data.get("info", []))
+            self.update_screen(game_info, screen, player_info, meta_info, replay_data.get("info", []))
             t2 = time.time() - t1
             if t2 < self.SEC_PER_TURN:
                 time.sleep(self.SEC_PER_TURN - t2)
+        time.sleep(1)
         return True
 
-    def update_screen(self, game, screen, meta, extra_info_list):
+    def update_screen(self, game, screen, player_info, meta, extra_info_list):
         for y in range(game["screen_height"]):
             line = "".join([chr(ch) for ch in screen[y]])
             ignore_error_add_str(self.main_window, y, 0, line)
@@ -124,6 +126,7 @@ class ReplayClient(object):
             "Turn: %s" % game["turn"],
             "Total Score: %s" % game["total_reward"],
             "This Reward: %s" % game["last_reward"],
+            "LastLoss: %s" % round(player_info.get("loss_value") or -1, 7),
             "=== Action ===",
             "Left : %d" % (keymap["LEFT"] & last_action > 0),
             "Right: %d" % (keymap["RIGHT"] & last_action > 0),

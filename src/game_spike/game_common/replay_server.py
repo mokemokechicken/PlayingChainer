@@ -3,6 +3,7 @@
 from cPickle import dumps, HIGHEST_PROTOCOL
 import socket
 import threading
+import datetime
 
 from game_repository import GameRepository
 from replay_const import REPLAY_TYPE_CURRENT_PLAY, REPLAY_TYPE_HIGH_SCORES, REPLAY_TYPE_LAST_PLAY
@@ -20,6 +21,7 @@ class ReplayServer(object):
         self.port = port or 7000
         self.host = host or '0.0.0.0'
         self.repo = repo or GameRepository()
+        self.start_time = datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
 
     def run_as_background(self):
         server_thread = threading.Thread(target=self.serve_forever)
@@ -50,7 +52,7 @@ class ReplayServer(object):
         conn.send(data)
 
     def record_high_score_game(self, game):
-        play_id = game.play_id
+        play_id = "%s-%s" % (self.start_time, game.play_id)
         self.repo.save_game_play(self.player_name, play_id, self.current_play)
 
     def load_all_high_score_games(self):
@@ -73,9 +75,12 @@ class ReplayServer(object):
 
     def on_update(self, game):
         if len(self.current_play["scenes"]) < self.MAX_SCENES:
-            self.current_play["scenes"].append({
+            scene_data = {
                 "screen": game.state.screen.data.copy(),
                 "game": game.turn_info(),
-            })
+            }
+            if game.player.turn_info:
+                scene_data["player"] = game.player.turn_info()
+            self.current_play["scenes"].append(scene_data)
         else:
             self.last_play = self.current_play
