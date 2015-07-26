@@ -24,13 +24,19 @@ class AgentModel(object):
         self.meta['name'] = self.model_name
 
     def setup_gpu(self):
-        self.function_set.to_gpu()
         self.enable_gpu = True
+        self.to_gpu()
+
+    def to_gpu(self):
+        if self.enable_gpu:
+            self.function_set.to_gpu()
+
+    def to_cpu(self):
+        if self.enable_gpu:
+            self.function_set.to_cpu()
 
     def forward(self, in_variable, train=True):
         x = in_variable
-        if self.enable_gpu:
-            x = cuda.to_gpu(x)
         y = None
         for i in range(1, 1000):  # 1000 は適当な数
             name = "l%d" % i

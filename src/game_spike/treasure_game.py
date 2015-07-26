@@ -11,7 +11,7 @@ import itertools
 
 from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
-from game_common.runner import run_pattern1
+from game_common.runner import run_pattern1, run_pattern2
 
 
 class Pos(object):
@@ -185,6 +185,9 @@ if __name__ == '__main__':
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
         debug_game(TreasureGame)
+    elif os.environ.get("MODEL") == '2':
+        print "Model2"
+        run_pattern2(TreasureGame, 'TreasureGameModeL2')
     else:
         print "EmbedID Mode"
         run_pattern1(TreasureGame, 'TreasureGameEmbedModel')

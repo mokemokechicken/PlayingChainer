@@ -113,6 +113,7 @@ class AsciiGamePlayerAgent(object):
         self.repo.load_model_params(self.agent_model)
         # self.optimizer = optimizers.SGD()
         self.optimizer = optimizers.RMSpropGraves(lr=0.00025, alpha=0.95, momentum=0.95, eps=0.0001)
+        # self.optimizer = optimizers.AdaDelta()
         self.optimizer.setup(self.agent_model.function_set.collect_parameters())
 
     def ready(self):
@@ -138,8 +139,9 @@ class AsciiGamePlayerAgent(object):
         self.state_history_array[0] = in_data                                    # set new history to index 0
 
     def forward(self, part_of_history_array, train=True, batch_size=1):
-        x = Variable(part_of_history_array.reshape((batch_size, self.agent_model.history_size,
-                                                   self.agent_model.height, self.agent_model.width)))
+        data = part_of_history_array.reshape((batch_size, self.agent_model.history_size,
+                                                   self.agent_model.height, self.agent_model.width))
+        x = Variable(self.wrap_gpu(data))
         return self.agent_model.forward(x, train=train)
 
     def forward_last_state(self, history_array, train=True):
@@ -163,11 +165,11 @@ class AsciiGamePlayerAgent(object):
             raise Exception("history_array dims must be 3 or 4, but %d", history_array.ndim)
 
     def select_action(self, history_array):
-        q_list = self.forward_current_state(history_array, train=False)
         if self.use_greedy and random() < self.E_GREEDY:
             return choice(self.effective_action_index_list)
         else:
-            return np.argmax(q_list.data)
+            q_list = self.forward_current_state(history_array, train=False)
+            return np.argmax(cuda.to_cpu(q_list.data))
 
     def update_q_table(self, history_array, last_action, last_reward):
         for loop_num in range(100):
@@ -194,9 +196,9 @@ class AsciiGamePlayerAgent(object):
 
         self.optimizer.zero_grads()
         last_q_list = self.forward_last_state(history_array, train=True)
-        tt = np.copy(last_q_list.data)
+        tt = np.copy(cuda.to_cpu(last_q_list.data))
         tt[0][last_action] = target_val
-        target = self.wrap_gpu(Variable(tt))
+        target = Variable(self.wrap_gpu(tt))
         loss = F.mean_squared_error(target, last_q_list)
         loss.backward()
         self.optimizer.update()
@@ -207,8 +209,8 @@ class AsciiGamePlayerAgent(object):
 
     def calc_target_val(self, history_array, last_reward):
         axis = 1 if history_array.ndim == 4 else None
-        tvs = self.forward_current_state(history_array, train=False).data
-        return cuda.to_cpu(last_reward + self.GAMMA * np.max(tvs, axis=axis))
+        tvs = cuda.to_cpu(self.forward_current_state(history_array, train=False).data)
+        return last_reward + self.GAMMA * np.max(tvs, axis=axis)
 
     # とりあえず、無理やり実装してみる
     def update_by_experimental_replay(self, num):
@@ -229,10 +231,10 @@ class AsciiGamePlayerAgent(object):
 
         self.optimizer.zero_grads()
         last_q_list_array = self.forward_last_state(history_arrays, train=True)
-        tt = np.copy(last_q_list_array.data)
+        tt = np.copy(cuda.to_cpu(last_q_list_array.data))
         for i in range(num):
             tt[i][last_action_array[i]] = target_val_array[i]
-        target = self.wrap_gpu(Variable(tt))
+        target = Variable(self.wrap_gpu(tt))
         loss = F.mean_squared_error(target, last_q_list_array)
         loss.backward()
         self.optimizer.update()

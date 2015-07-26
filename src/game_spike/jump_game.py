@@ -9,7 +9,7 @@ import itertools
 
 from game_common.base_system import AsciiGame, Screen, StateBase
 from game_common.debug_game import debug_game
-from game_common.runner import run_pattern1
+from game_common.runner import run_pattern1, run_pattern2
 
 
 class State(StateBase):
@@ -25,6 +25,7 @@ class JumpGame(AsciiGame):
     space_rate = 0.2
     PY_MAX = 8
     POWER_MAX = 3
+    MAX_TURN = 500
 
     # must be defined
     def prepare_game(self):
@@ -43,11 +44,11 @@ class JumpGame(AsciiGame):
         self.draw_player()
 
         ######## decide reward
-        reward = 0.05
+        reward = 0.01
 
         # key penalty
-        if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切)
-            reward -= 0.1
+        # if action not in self.effective_actions():  # 余分なKeyを押したらペナルティとする(親切 じゃないのかも)
+        #     reward -= 0.1
 
         # if state.py < self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:  # 穴の上では報酬がある
         #     reward += 0.1
@@ -56,6 +57,9 @@ class JumpGame(AsciiGame):
         if state.py == self.PY_MAX and screen[self.PY_MAX+1, state.px] == self.SPACE:
             self.is_game_over = True
             reward = -1
+
+        if self.turn == self.MAX_TURN:
+            self.is_game_over = True
 
         return state, reward
 
@@ -111,6 +115,9 @@ if __name__ == '__main__':
     if os.environ.get("DEBUG_PLAY", None):
         print "Debug Mode"
         debug_game(JumpGame)
+    elif os.environ.get("MODEL") == '2':
+        print "Model2"
+        run_pattern2(JumpGame, 'JumpGameModel2')
     else:
         print "EmbedID Mode"
         run_pattern1(JumpGame, 'JumpGame')

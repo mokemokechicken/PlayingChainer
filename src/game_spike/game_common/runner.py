@@ -13,6 +13,21 @@ def calc_output_size(screen_size, ksize, stride):
     return (screen_size - ksize) / stride + 1
 
 
+def relu_with_drop_ratio(ratio):
+    def f(x, train=True):
+        return F.dropout(F.relu(x), train=train, ratio=ratio)
+    return f
+
+def drop_ratio(ratio):
+    def f(x, train=True):
+        return F.dropout(x, train=train, ratio=ratio)
+    return f
+
+def relu():
+    def f(x, *args, **kw):
+        return F.relu(x)
+    return f
+
 def run_pattern1(ThisGame, model_name):
     HISTORY_SIZE = 3
     PATTERN_SIZE1 = 50
@@ -38,16 +53,6 @@ def run_pattern1(ThisGame, model_name):
                             width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
                             history_size=HISTORY_SIZE, out_size=64)
 
-    def relu_with_drop_ratio(ratio):
-        def f(x, train=True):
-            return F.dropout(F.relu(x), train=train, ratio=ratio)
-        return f
-
-    def drop_ratio(ratio):
-        def f(x, train=True):
-            return F.dropout(x, train=train, ratio=ratio)
-        return f
-
     model.activate_functions["l1"] = relu_with_drop_ratio(0.2)
     model.activate_functions["l2"] = relu_with_drop_ratio(0.4)
     model.activate_functions["l3"] = relu_with_drop_ratio(0.5)
@@ -56,4 +61,33 @@ def run_pattern1(ThisGame, model_name):
     if os.environ.get("GPU"):
         player.setup_gpu(int(os.environ.get("GPU")))
     player.ALPHA = 0.01
+    agent_play(ThisGame, player)
+
+def run_pattern2(ThisGame, model_name):
+    HISTORY_SIZE = 3
+    PATTERN_SIZE1 = 100
+    EMBED_OUT_SIZE = 3
+    KSIZE1 = (3, 3*EMBED_OUT_SIZE)
+    STRIDE1 = (1, 1*EMBED_OUT_SIZE)
+    nw1 = calc_output_size(ThisGame.WIDTH*EMBED_OUT_SIZE, KSIZE1[1], STRIDE1[1])  # 13
+    nh1 = calc_output_size(ThisGame.HEIGHT, KSIZE1[0], STRIDE1[0])                # 8
+
+    chainer_model = FunctionSet(
+        l1=F.Convolution2D(HISTORY_SIZE, PATTERN_SIZE1, ksize=KSIZE1, stride=STRIDE1),
+        l2=F.Linear(nw1 * nh1 * PATTERN_SIZE1, 2000),
+        l3=F.Linear(2000, 500),
+        l4=F.Linear(500, 64),
+    )
+    model = EmbedAgentModel(model=chainer_model, model_name=model_name,
+                            embed_out_size=EMBED_OUT_SIZE,
+                            width=ThisGame.WIDTH, height=ThisGame.HEIGHT,
+                            history_size=HISTORY_SIZE, out_size=64)
+
+    model.activate_functions["l1"] = relu()
+    model.activate_functions["l2"] = relu_with_drop_ratio(0.4)
+    model.activate_functions["l3"] = relu_with_drop_ratio(0.5)
+    model.activate_functions["l4"] = drop_ratio(0.5)
+    player = AsciiGamePlayerAgent(model)
+    if os.environ.get("GPU"):
+        player.setup_gpu(int(os.environ.get("GPU")))
     agent_play(ThisGame, player)

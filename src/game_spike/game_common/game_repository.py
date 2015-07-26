@@ -4,6 +4,7 @@
 import cPickle as pickle
 import os
 import bz2
+from chainer import cuda
 
 
 class GameRepository(object):
@@ -72,12 +73,14 @@ class GameRepository(object):
         :type agent_model: AgentModel
         """
         model_path = self.get_model_path(agent_model.model_name)
+        agent_model.to_cpu()
         data = {
             "parameters": agent_model.function_set.parameters,
             "extra_params": agent_model.get_extra_params(),
             "meta": agent_model.meta,
         }
         self._safe_save_data(model_path, data)
+        agent_model.to_gpu()
 
     def _safe_save_data(self, path, data):
         self.safe_create_dir(os.path.dirname(path))
