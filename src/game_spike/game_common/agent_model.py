@@ -11,6 +11,7 @@ import chainer.functions as F
 class AgentModel(object):
     meta = {}
     activate_functions = {}
+    enable_gpu = False
 
     def __init__(self, model, model_name, width, height, history_size, out_size):
         self.function_set = model
@@ -22,8 +23,14 @@ class AgentModel(object):
         self.out_size = out_size
         self.meta['name'] = self.model_name
 
+    def setup_gpu(self):
+        self.function_set.to_gpu()
+        self.enable_gpu = True
+
     def forward(self, in_variable, train=True):
         x = in_variable
+        if self.enable_gpu:
+            x = cuda.to_gpu(x)
         y = None
         for i in range(1, 1000):  # 1000 は適当な数
             name = "l%d" % i

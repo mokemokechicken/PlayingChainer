@@ -7,7 +7,7 @@ import datetime
 
 from game_repository import GameRepository
 from replay_const import REPLAY_TYPE_CURRENT_PLAY, REPLAY_TYPE_HIGH_SCORES, REPLAY_TYPE_LAST_PLAY
-import bz2
+
 
 class ReplayServer(object):
     last_play = None

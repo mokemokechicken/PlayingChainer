@@ -6,7 +6,7 @@ from random import random, randint, choice
 import math
 import numpy as np
 
-from chainer import Variable, optimizers
+from chainer import Variable, optimizers, cuda
 import chainer.functions as F
 
 from game_repository import GameRepository
@@ -81,8 +81,10 @@ class AsciiGamePlayerAgent(object):
     last_loss_value = None
     training = True
     use_greedy = True
+    gpu_device_num = None
+    enable_gpu = False
 
-    def __init__(self, agent_model, repo=None):
+    def __init__(self, agent_model, repo=None, gpu_device_num=None):
         """
 
         :type agent_model: AgentModel
@@ -94,9 +96,18 @@ class AsciiGamePlayerAgent(object):
         self.effective_action_index_list = range(len(self.actions))
         self.loss_history = LossHistory(100)
         self.exp_manager = ExperimentManager(self.MAX_EXPERIMENTS_SIZE)
+        self.setup_gpu(gpu_device_num)
 
     def name(self):
         return self.agent_model.model_name
+
+    def setup_gpu(self, gpu_device_num):
+        self.gpu_device_num = gpu_device_num
+        self.enable_gpu = gpu_device_num is not None and gpu_device_num is not False
+        if self.enable_gpu:
+            cuda.init()
+            cuda.use_device(self.gpu_device_num)
+            self.agent_model.setup_gpu()
 
     def load_model_parameters(self):
         self.repo.load_model_params(self.agent_model)
@@ -172,6 +183,12 @@ class AsciiGamePlayerAgent(object):
                 self.loss_history.reset()
                 raise QuitGameException("loss_value become Nan!")
 
+    def wrap_gpu(self, var):
+        if self.enable_gpu:
+            return cuda.to_gpu(var)
+        else:
+            return var
+
     def do_update_q_table(self, history_array, last_action, last_reward):
         target_val = self.calc_target_val(history_array, last_reward)
 
@@ -179,18 +196,19 @@ class AsciiGamePlayerAgent(object):
         last_q_list = self.forward_last_state(history_array, train=True)
         tt = np.copy(last_q_list.data)
         tt[0][last_action] = target_val
-        target = Variable(tt)
+        target = self.wrap_gpu(Variable(tt))
         loss = F.mean_squared_error(target, last_q_list)
         loss.backward()
         self.optimizer.update()
         self.agent_model.on_learn(times=len(tt))
-        self.last_loss_value = self.last_loss_value or loss.data
-        return loss.data
+        loss_value = cuda.to_cpu(loss.data)
+        self.last_loss_value = self.last_loss_value or loss_value
+        return loss_value
 
     def calc_target_val(self, history_array, last_reward):
         axis = 1 if history_array.ndim == 4 else None
         tvs = self.forward_current_state(history_array, train=False).data
-        return last_reward + self.GAMMA * np.max(tvs, axis=axis)
+        return cuda.to_cpu(last_reward + self.GAMMA * np.max(tvs, axis=axis))
 
     # とりあえず、無理やり実装してみる
     def update_by_experimental_replay(self, num):
@@ -214,14 +232,14 @@ class AsciiGamePlayerAgent(object):
         tt = np.copy(last_q_list_array.data)
         for i in range(num):
             tt[i][last_action_array[i]] = target_val_array[i]
-        target = Variable(tt)
+        target = self.wrap_gpu(Variable(tt))
         loss = F.mean_squared_error(target, last_q_list_array)
         loss.backward()
         self.optimizer.update()
         self.agent_model.on_learn(times=len(tt))
         if is_debug():
             print "Experimental Replay Loss: %s" % loss.data
-        return loss.data
+        return cuda.to_cpu(loss.data)
 
     def turn_info(self):
         """for debug or info"""
